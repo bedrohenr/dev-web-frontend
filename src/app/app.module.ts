@@ -8,17 +8,18 @@ import { HomeComponent } from './components/home/home.component';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
 import { AuthInterceptor } from './core/handlers/http.handle-interceptor';
 import { Service } from './services/service.service';
+import { CampeonatoComponent } from './campeonato/campeonato.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
