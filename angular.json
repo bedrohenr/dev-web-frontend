@@ -26,6 +26,7 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/line-awesome.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "scripts": [

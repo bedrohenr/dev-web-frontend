@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700&display=swap");
+
+body {
+  font-family: Poppins, Helvetica, "sans-serif" !important;
+  background-color: #f9fafb;
+  color: #555;
+  height: 100%;
+}
+
+header {
+  background-color: #118b64;
+}
+
