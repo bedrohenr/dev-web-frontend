@@ -2,7 +2,7 @@
 
 body {
   font-family: Poppins, Helvetica, "sans-serif" !important;
-  background-color: #f9fafb;
+  background-color: #f9fafb !important;
   color: #555;
   height: 100%;
 }
@@ -11,3 +11,19 @@ header {
   background-color: #118b64;
 }
 
+a:hover,
+button:hover,
+a{
+  text-decoration: none !important;
+}
+
+.btn-time {
+  border-color: #cdb88b !important;
+  background-color: #cdb88b !important;
+  color: #fff !important;
+}
+
+.btn-time :hover {
+  border-color: #b19864 !important;
+  background-color: #b19864 !important;
+}
