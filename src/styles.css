@@ -27,3 +27,12 @@ a{
   border-color: #b19864 !important;
   background-color: #b19864 !important;
 }
+
+.card-home{
+  cursor: pointer;
+  background-image: linear-gradient(to right, #5f7e95, #355972) !important;
+}
+
+.card-hover:hover .card{
+  box-shadow: 5px 5px 30px 0px rgba(0,0,0,0.35) !important;
+}
