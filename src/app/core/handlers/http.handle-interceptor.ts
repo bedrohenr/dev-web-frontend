@@ -12,7 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const authRequest = request.clone({
       setHeaders: {
-        Authorization: 'Bearer test_561488c9c538c0abe0536b7d015db6'
+        Authorization: 'Bearer '
       }
     });
 

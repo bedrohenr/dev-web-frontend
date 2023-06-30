@@ -6,16 +6,11 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    children:[
-      {
-        path:'Campeonato/:nomeCampeonato',
-        loadChildren: () => import('./campeonato/campeonato.module').then(m => m.CampeonatoModule)
-      }
-    ]
-
   },
-
-
+  {
+    path:'Clientes',
+    loadChildren: () => import('./Clientes/clientes.module').then(m => m.ClientesModule)
+  }
 
 ];
 
