@@ -20,4 +20,8 @@ export class HomeComponent implements OnInit{
   irParaClientes(){
     this.router.navigate(['/Clientes'])
   }
+
+  irParaFornecedores(){
+    this.router.navigate(['/Fornecedores'])
+  }
 }
