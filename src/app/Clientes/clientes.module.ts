@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ClientesComponent } from './clientes.component';
 import { ClientesRoutingModule } from './clientes.routing.module';
+import { CoreModule } from '../core/core.module';
 @NgModule({
     exports: [
 
@@ -10,6 +11,7 @@ import { ClientesRoutingModule } from './clientes.routing.module';
     ],
     imports: [
       ClientesRoutingModule,
+      CoreModule,
     ]
 })
 export class ClientesModule { }
