@@ -17,6 +17,19 @@ a{
   text-decoration: none !important;
 }
 
+.btn i{
+  font-size: 1.3em;
+  vertical-align: inherit;
+}
+
+.btn {
+  font-weight: 300;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  font-size: 1em;
+}
+
 .btn-time {
   border-color: #cdb88b !important;
   background-color: #cdb88b !important;

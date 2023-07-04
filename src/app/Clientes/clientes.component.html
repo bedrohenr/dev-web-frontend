@@ -1,11 +1,12 @@
-<div class="container ">
+<div class="container mt-3">
   <div class="row">
     <div class="col-md-8 col-8 d-flex align-items-center mb-3 mb-sm-0">
       <h4 class="mb-0 fw-light">Clientes</h4>
     </div>
     <div class="col-4">
       <div class="d-flex align-items-start justify-content-end">
-        <a class="btn btn-link btn-voltar-topo pe-0" appHandleBack><i class="la la-reply"></i> Voltar</a>
+        <a class="btn btn-link btn-voltar-topo pe-0 me-3" appHandleBack><i class="la la-reply"></i> Voltar</a>
+        <a class="btn btn-primary"><i class="la la-plus"></i> Incluir cliente</a>
       </div>
     </div>
   </div>
@@ -17,11 +18,12 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th style="width:9%">Id</th>
+            <th style="width:8%">Id</th>
             <th style="width:30%">Nome</th>
             <th style="width:20%">Tipo</th>
             <th style="width:25%">Telefone</th>
             <th style="width:15%">Ativo</th>
+            <th style="width: 1%"></th>
             <th style="width: 1%"></th>
           </tr>
         </thead>
@@ -32,6 +34,8 @@
             <td>Pessoa Física</td>
             <td>(27) 99810-7134</td>
             <td>True</td>
+            <td><a class="btn btn-sm btn-danger text-nowrap"><i class="la la-trash"></i></a></td>
+            <td><a class="btn btn-sm btn-secondary text-nowrap"><i class="la la-edit mb-1"></i> Alterar</a></td>
           </tr>
         </tbody>
       </table>
