@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FornecedoresComponent } from './fornecedores.component';
+import { ListarFornecedoresComponent } from './Listar/listar-fornecedores.component';
 export const fornecedoresRoutes: Routes = [
   {
     path: '',
-    component: FornecedoresComponent,
+    component: ListarFornecedoresComponent,
   }
 ];
 

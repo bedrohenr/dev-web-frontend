@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientesComponent } from './clientes.component';
+import { ListarClientesComponent } from './Listar/listar-clientes.component';
 export const clientesRoutes: Routes = [
   {
     path: '',
-    component: ClientesComponent,
+    component: ListarClientesComponent,
   }
 ];
 
