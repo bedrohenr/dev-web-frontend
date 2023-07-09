@@ -30,6 +30,10 @@ a{
   font-size: 1em;
 }
 
+.show{
+  display: block !important;
+}
+
 .btn-time {
   border-color: #cdb88b !important;
   background-color: #cdb88b !important;
