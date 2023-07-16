@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ClientesIncluirModel } from '../clientes.models';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,7 +11,8 @@ import { ClientesIncluirModel } from '../clientes.models';
 export class IncluirClientesComponent implements OnInit{
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ){}
 
   estaEnviandoFormulario = false
@@ -24,7 +26,7 @@ export class IncluirClientesComponent implements OnInit{
     cidade: new FormControl<string | null>(null, Validators.required),
     endereco: new FormControl<string | null>(null, Validators.required),
     email: new FormControl<string | null>(null, Validators.required),
-    ativo: new FormControl<string | null>(null, Validators.required),
+    ativo: new FormControl<string | null>(null),
   })
 
   ngOnInit(): void {
@@ -32,20 +34,23 @@ export class IncluirClientesComponent implements OnInit{
   }
 
   salvarClientes(){
+    if(this.formIncluirCliente.valid){
+      const cliente = new ClientesIncluirModel({
+        nome: this.formIncluirCliente.value.nome,
+        cpf: this.formIncluirCliente.value.cpf,
+        dataDeNascimento: this.formIncluirCliente.value.dataDeNascimento,
+        cep: this.formIncluirCliente.value.cep,
+        estado: this.formIncluirCliente.value.estado,
+        cidade: this.formIncluirCliente.value.cidade,
+        endereco: this.formIncluirCliente.value.endereco,
+        email: this.formIncluirCliente.value.email,
+        ativo: this.formIncluirCliente.value.ativo,
+      })
 
-    const cliente = new ClientesIncluirModel({
-      nome: this.formIncluirCliente.value.nome,
-      cpf: this.formIncluirCliente.value.cpf,
-      dataDeNascimento: this.formIncluirCliente.value.dataDeNascimento,
-      cep: this.formIncluirCliente.value.cep,
-      estado: this.formIncluirCliente.value.estado,
-      cidade: this.formIncluirCliente.value.cidade,
-      endereco: this.formIncluirCliente.value.endereco,
-      email: this.formIncluirCliente.value.email,
-      ativo: this.formIncluirCliente.value.ativo,
-    })
+      this.estaEnviandoFormulario = true
+      console.log(cliente)
+      this.router.navigate(['Clientes'])
+    }
 
-    this.estaEnviandoFormulario = true
-    console.log(cliente)
   }
 }
