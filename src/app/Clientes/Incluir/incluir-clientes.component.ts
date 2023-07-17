@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ClientesIncluirModel } from '../clientes.models';
 import { Router } from '@angular/router';
+import { ClientesIncluirModel } from '../clientes.models';
+import { ClientesService } from '../clientes.service';
 
 
 @Component({
@@ -12,7 +13,8 @@ export class IncluirClientesComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private clientesService: ClientesService
   ){}
 
   estaEnviandoFormulario = false
@@ -34,7 +36,11 @@ export class IncluirClientesComponent implements OnInit{
   }
 
   salvarClientes(){
+
     if(this.formIncluirCliente.valid){
+
+      this.estaEnviandoFormulario = true
+
       const cliente = new ClientesIncluirModel({
         nome: this.formIncluirCliente.value.nome,
         cpf: this.formIncluirCliente.value.cpf,
@@ -47,8 +53,7 @@ export class IncluirClientesComponent implements OnInit{
         ativo: this.formIncluirCliente.value.ativo,
       })
 
-      this.estaEnviandoFormulario = true
-      console.log(cliente)
+      this.clientesService.incluirClientes(cliente)
       this.router.navigate(['Clientes'])
     }
 
