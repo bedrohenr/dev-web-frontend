@@ -32,7 +32,7 @@ export class IncluirClientesComponent implements OnInit{
   })
 
   ngOnInit(): void {
-
+    console.log('teste 2');
   }
 
   salvarClientes(){

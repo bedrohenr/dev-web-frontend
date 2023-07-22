@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ClientesIncluirModel } from './clientes.models';
+import { ClientesIncluirModel, ClientesListarModel } from './clientes.models';
 import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
@@ -11,6 +11,11 @@ export class ClientesService {
 
   incluirClientes(cliente: ClientesIncluirModel){
     this.http.post(this.url, cliente).subscribe()
+  }
+
+  obterTodosClientes<T>(): Observable<ClientesListarModel[]> {
+    return this.http
+      .get<ClientesListarModel[]>(this.url);
   }
 
 }

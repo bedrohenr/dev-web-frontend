@@ -20,19 +20,22 @@
           <tr>
             <th style="width:8%">Id</th>
             <th style="width:30%">Nome</th>
-            <th style="width:20%">Tipo</th>
-            <th style="width:25%">Telefone</th>
+            <th style="width:20%">email</th>
+            <th style="width:13%">Estado</th>
+            <th style="width: 12%">Cidade</th>
             <th style="width:15%">Ativo</th>
             <th style="width: 1%"></th>
             <th style="width: 1%"></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Cliente de testes</td>
-            <td>Pessoa Física</td>
-            <td>(27) 99810-7134</td>
+          <tr *ngFor="let cliente of clientes">
+            <td>{{cliente.id}}</td>
+            <td>{{cliente.nome}}</td>
+            <td>{{cliente.tipo}}</td>
+            <td>{{cliente.email}}</td>
+            <td>{{cliente.Estado}}</td>
+            <td>{{cliente.Cidade}}</td>
             <td>True</td>
             <td><a class="btn btn-sm btn-danger text-nowrap"><i class="la la-trash"></i></a></td>
             <td><a class="btn btn-sm btn-secondary text-nowrap"><i class="la la-edit mb-1"></i> Alterar</a></td>

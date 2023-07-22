@@ -30,3 +30,16 @@ export class ClientesIncluirModel{
     this.ativo = dados.ativo
   }
 }
+
+
+export class ClientesListarModel{
+  nome!: string;
+  cpf!: number;
+  dataDeNascimento!: number;
+  cep!: number;
+  estado!: string;
+  cidade!: string;
+  endereco!: string;
+  email!: string;
+  ativo!: string;
+}
