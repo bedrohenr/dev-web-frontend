@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListarClientesComponent } from './Listar/listar-clientes.component';
 import { IncluirClientesComponent } from './Incluir/incluir-clientes.component';
+import { AlterarClientesComponent } from './Alterar/alterar-clientes.component';
+import { ExcluirClientesComponent } from './Excluir/excluir-clientes.component';
 export const clientesRoutes: Routes = [
   {
     path: '',
@@ -10,6 +12,14 @@ export const clientesRoutes: Routes = [
       {
         path:'Incluir',
         component: IncluirClientesComponent
+      },
+      {
+        path:'Alterar',
+        component: AlterarClientesComponent
+      },
+      {
+        path:'Excluir',
+        component: ExcluirClientesComponent
       }
     ]
   }

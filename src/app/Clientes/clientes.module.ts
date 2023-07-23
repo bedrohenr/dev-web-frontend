@@ -5,6 +5,8 @@ import { IncluirClientesComponent } from './Incluir/incluir-clientes.component';
 import { ListarClientesComponent } from './Listar/listar-clientes.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AlterarClientesComponent } from './Alterar/alterar-clientes.component';
+import { ExcluirClientesComponent } from './Excluir/excluir-clientes.component';
 @NgModule({
     exports: [
 
@@ -12,6 +14,8 @@ import { CommonModule } from '@angular/common';
     declarations: [
       IncluirClientesComponent,
       ListarClientesComponent,
+      AlterarClientesComponent,
+      ExcluirClientesComponent
     ],
     imports: [
       CommonModule,

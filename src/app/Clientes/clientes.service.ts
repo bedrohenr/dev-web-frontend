@@ -18,7 +18,7 @@ export class ClientesService {
       .get<ClientesListarModel[]>(this.url);
   }
 
-  objetoParaArray(objeto: Record<string, any>): ClientesListarModel[] {
+  objetoParaArray(objeto: Record<string, any>): ClientesListarModel[] { // refatorar, da pra usar o object.keys
     const arrayClientes: ClientesListarModel[] = [];
 
     for (const chave in objeto) {
