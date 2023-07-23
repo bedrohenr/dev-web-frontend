@@ -23,7 +23,8 @@ export class ListarClientesComponent implements OnInit{
   obterClientes(){
     this.clientesService.obterTodosClientes().subscribe({
       next: (clientes: ClientesListarModel[]) => {
-        this.clientes = clientes
+        this.clientes = this.clientesService.objetoParaArray(clientes);
+        console.log(this.clientes)
       }
     })
   }

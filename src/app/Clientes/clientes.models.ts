@@ -33,6 +33,7 @@ export class ClientesIncluirModel{
 
 
 export class ClientesListarModel{
+  id!: string;
   nome!: string;
   cpf!: number;
   dataDeNascimento!: number;
