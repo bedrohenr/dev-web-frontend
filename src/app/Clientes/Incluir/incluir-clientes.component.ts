@@ -32,7 +32,6 @@ export class IncluirClientesComponent implements OnInit{
   })
 
   ngOnInit(): void {
-    console.log('teste 2');
   }
 
   salvarClientes(){
@@ -53,8 +52,17 @@ export class IncluirClientesComponent implements OnInit{
         ativo: this.formIncluirCliente.value.ativo,
       })
 
-      this.clientesService.incluirClientes(cliente)
-      this.router.navigate(['Clientes'])
+      this.clientesService.incluirClientes(cliente).subscribe({
+        next: () => {
+          this.estaEnviandoFormulario = false
+          this.router.navigate(['Clientes'])
+        },
+        error: () => {
+          this.estaEnviandoFormulario = false
+        }
+
+      })
+
     }
 
   }

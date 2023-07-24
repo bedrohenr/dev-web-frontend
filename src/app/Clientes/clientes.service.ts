@@ -9,8 +9,8 @@ export class ClientesService {
 
   url = 'https://crud-angular-com-firebase-default-rtdb.firebaseio.com/clientes.json'
 
-  incluirClientes(cliente: ClientesIncluirModel){
-    this.http.post(this.url, cliente).subscribe()
+  incluirClientes<T>(cliente: ClientesIncluirModel): Observable<any> {
+    return this.http.post(this.url, cliente);
   }
 
   obterTodosClientes<T>(): Observable<ClientesListarModel[]> {

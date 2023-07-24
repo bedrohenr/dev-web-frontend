@@ -15,18 +15,23 @@ export class ListarClientesComponent implements OnInit{
   ){}
 
   clientes: ClientesListarModel[] = []
+  estaObtendoClientes = false
 
   ngOnInit(): void {
     this.obterClientes()
   }
 
   obterClientes(){
+    this.estaObtendoClientes = true
     this.clientesService.obterTodosClientes().subscribe({
       next: (clientes: ClientesListarModel[]) => {
         this.clientes = this.clientesService.objetoParaArray(clientes);
-        console.log(this.clientes)
+        this.estaObtendoClientes = false
+      },
+      error: () => {
+        this.estaObtendoClientes = false
       }
-    })
+    },)
   }
 
 }
