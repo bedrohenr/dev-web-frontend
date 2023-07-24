@@ -90,3 +90,21 @@ a{
     transform: rotate(360deg);
   }
 }
+
+.text-error {
+  font-weight: 300;
+  color: lightcoral;
+  font-size: 0.8rem;
+  margin-top: 3px;
+  float: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ng-invalid.ng-dirty:not(form):not(div):not(.ng-select):not(timepicker),
+.ng-invalid:not(form):not(.ng-select):not(timepicker).form-submitted,
+.ng-invalid-btn {
+  border: 1px solid lightcoral !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
+}

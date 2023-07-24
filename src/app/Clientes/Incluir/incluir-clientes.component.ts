@@ -19,6 +19,7 @@ export class IncluirClientesComponent implements OnInit{
   ){}
 
   estaEnviandoFormulario = false
+  formularioFoiEnviado = false
 
   formIncluirCliente = this.formBuilder.group({
     nome: new FormControl<string | null>(null, Validators.required),
@@ -36,6 +37,7 @@ export class IncluirClientesComponent implements OnInit{
   }
 
   salvarClientes(){
+    this.formularioFoiEnviado = true
 
     if(this.formIncluirCliente.valid){
 

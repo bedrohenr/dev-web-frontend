@@ -12,7 +12,9 @@
               <div class="col-md-12">
                 <div class="mb-3">
                   <label for="nome" class="form-label m-0">Nome</label>
-                  <input type="text" class="form-control" id="nome" formControlName="nome">
+                  <input type="text" class="form-control" [ngClass]="{
+                    'form-submitted': formularioFoiEnviado}" id="nome" formControlName="nome" >
+                  <span class="text-error" *ngIf="formIncluirCliente.controls['nome']?.errors?.['required'] && formularioFoiEnviado"><i class="la la-warning"></i> Campo obrigatório</span>
                 </div>
               </div>
             </div>
