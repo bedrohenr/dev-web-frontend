@@ -40,8 +40,8 @@
             <td>{{cliente.estado}}</td>
             <td>{{cliente.cidade}}</td>
             <td>True</td>
-            <td><a class="btn btn-sm btn-danger text-nowrap"  routerLink='Excluir'><i class="la la-trash"></i></a></td>
-            <td><a class="btn btn-sm btn-secondary text-nowrap"  routerLink='Alterar'><i class="la la-edit mb-1"></i> Alterar</a></td>
+            <td><a class="btn btn-sm btn-danger text-nowrap"  [routerLink]='["Excluir", cliente.id, cliente.nome]'><i class="la la-trash"></i></a></td>
+            <td><a class="btn btn-sm btn-secondary text-nowrap"  [routerLink]='["Alterar", cliente.id]'><i class="la la-edit mb-1"></i> Alterar</a></td>
           </tr>
         </tbody>
       </table>

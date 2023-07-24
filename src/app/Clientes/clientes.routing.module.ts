@@ -14,11 +14,11 @@ export const clientesRoutes: Routes = [
         component: IncluirClientesComponent
       },
       {
-        path:'Alterar',
+        path:'Alterar/:id',
         component: AlterarClientesComponent
       },
       {
-        path:'Excluir',
+        path:'Excluir/:id/:nome',
         component: ExcluirClientesComponent
       }
     ]

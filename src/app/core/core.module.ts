@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HandleBackDirective } from './directives/handle-back.directive';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
     exports: [
       HandleBackDirective
@@ -8,7 +9,7 @@ import { HandleBackDirective } from './directives/handle-back.directive';
       HandleBackDirective,
     ],
     imports: [
-
+      ToastrModule.forRoot(),
     ]
 })
 export class CoreModule { }

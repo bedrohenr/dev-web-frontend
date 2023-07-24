@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ClientesIncluirModel } from '../clientes.models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClientesAlterarModel, ClientesIncluirModel, ClientesListarModel } from '../clientes.models';
 import { ClientesService } from '../clientes.service';
 
 
@@ -14,10 +14,13 @@ export class AlterarClientesComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private clientesService: ClientesService
+    private clientesService: ClientesService,
+    private activatedRoute: ActivatedRoute,
   ){}
 
+  idCliente: string = this.activatedRoute.snapshot.params['id']
   estaEnviandoFormulario = false
+  estaObtendoCliente = false
 
   formAlterarCliente = this.formBuilder.group({
     nome: new FormControl<string | null>(null, Validators.required),
@@ -32,7 +35,7 @@ export class AlterarClientesComponent implements OnInit{
   })
 
   ngOnInit(): void {
-    console.log('teste 2');
+    this.obterCliente();
   }
 
   alterarCliente(){
@@ -41,7 +44,8 @@ export class AlterarClientesComponent implements OnInit{
 
       this.estaEnviandoFormulario = true
 
-      const cliente = new ClientesIncluirModel({
+      const cliente = new ClientesAlterarModel({
+        id: this.idCliente,
         nome: this.formAlterarCliente.value.nome,
         cpf: this.formAlterarCliente.value.cpf,
         dataDeNascimento: this.formAlterarCliente.value.dataDeNascimento,
@@ -53,9 +57,41 @@ export class AlterarClientesComponent implements OnInit{
         ativo: this.formAlterarCliente.value.ativo,
       })
 
-      this.clientesService.incluirClientes(cliente)
-      this.router.navigate(['Clientes'])
-    }
+      this.clientesService.alterarCliente(cliente).subscribe({
+        next: () => {
+          this.estaEnviandoFormulario = false
+          this.router.navigate(['Clientes'])
+        },
+        error: () => {
+          this.estaEnviandoFormulario = false
+        }
+      })
 
+    }
+  }
+
+  obterCliente(){
+    this.estaObtendoCliente = true
+
+    this.clientesService.obterClientePorId(this.idCliente).subscribe({
+      next:(cliente) => {
+
+        this.formAlterarCliente.patchValue({
+          nome: cliente.nome,
+          cpf: cliente.cpf,
+          dataDeNascimento: cliente.dataDeNascimento,
+          estado: cliente.estado,
+          cidade: cliente.cidade,
+          endereco: cliente.endereco,
+          email: cliente.email,
+          ativo: cliente.ativo,
+        })
+
+        this.estaObtendoCliente = false
+      },
+      error:() => {
+        this.estaObtendoCliente = false
+      },
+    })
   }
 }

@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AlterarClientesComponent } from './Alterar/alterar-clientes.component';
 import { ExcluirClientesComponent } from './Excluir/excluir-clientes.component';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
     exports: [
 
