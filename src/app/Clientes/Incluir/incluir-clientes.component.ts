@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientesIncluirModel } from '../clientes.models';
 import { ClientesService } from '../clientes.service';
+import { ValidadorCpfCnpj } from 'src/app/core/validators/validatorCpfCnpj';
 
 
 @Component({
@@ -23,13 +24,13 @@ export class IncluirClientesComponent implements OnInit{
 
   formIncluirCliente = this.formBuilder.group({
     nome: new FormControl<string | null>(null, Validators.required),
-    cpf: new FormControl<number | null>(null, Validators.required),
+    cpf: new FormControl<number | null>(null,[ Validators.required, ValidadorCpfCnpj]),
     dataDeNascimento: new FormControl<number | null>(null, Validators.required),
     cep: new FormControl<number | null>(null, Validators.required),
     estado: new FormControl<string | null>(null, Validators.required),
     cidade: new FormControl<string | null>(null, Validators.required),
     endereco: new FormControl<string | null>(null, Validators.required),
-    email: new FormControl<string | null>(null, Validators.required),
+    email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
     ativo: new FormControl<string | null>(null),
   })
 
@@ -38,8 +39,9 @@ export class IncluirClientesComponent implements OnInit{
 
   salvarClientes(){
     this.formularioFoiEnviado = true
-
+    console.log(this.formIncluirCliente)
     if(this.formIncluirCliente.valid){
+
 
       this.estaEnviandoFormulario = true
 
