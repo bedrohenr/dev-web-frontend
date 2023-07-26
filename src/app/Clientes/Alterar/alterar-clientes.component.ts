@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesAlterarModel, ClientesIncluirModel, ClientesListarModel } from '../clientes.models';
 import { ClientesService } from '../clientes.service';
+import { ValidadorCpfCnpj } from 'src/app/core/validators/validatorCpfCnpj';
 
 
 @Component({
@@ -21,16 +22,17 @@ export class AlterarClientesComponent implements OnInit{
   idCliente: string = this.activatedRoute.snapshot.params['id']
   estaEnviandoFormulario = false
   estaObtendoCliente = false
+  formularioFoiEnviado = false
 
   formAlterarCliente = this.formBuilder.group({
     nome: new FormControl<string | null>(null, Validators.required),
-    cpf: new FormControl<number | null>(null, Validators.required),
+    cpf: new FormControl<number | null>(null,[ Validators.required, ValidadorCpfCnpj]),
     dataDeNascimento: new FormControl<number | null>(null, Validators.required),
     cep: new FormControl<number | null>(null, Validators.required),
     estado: new FormControl<string | null>(null, Validators.required),
     cidade: new FormControl<string | null>(null, Validators.required),
     endereco: new FormControl<string | null>(null, Validators.required),
-    email: new FormControl<string | null>(null, Validators.required),
+    email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
     ativo: new FormControl<string | null>(null),
   })
 
@@ -39,7 +41,7 @@ export class AlterarClientesComponent implements OnInit{
   }
 
   alterarCliente(){
-
+    this.formularioFoiEnviado = true
     if(this.formAlterarCliente.valid){
 
       this.estaEnviandoFormulario = true
@@ -60,10 +62,12 @@ export class AlterarClientesComponent implements OnInit{
       this.clientesService.alterarCliente(cliente).subscribe({
         next: () => {
           this.estaEnviandoFormulario = false
+          this.formularioFoiEnviado = false
           this.router.navigate(['Clientes'])
         },
         error: () => {
           this.estaEnviandoFormulario = false
+          this.formularioFoiEnviado = false
         }
       })
 
@@ -80,6 +84,7 @@ export class AlterarClientesComponent implements OnInit{
           nome: cliente.nome,
           cpf: cliente.cpf,
           dataDeNascimento: cliente.dataDeNascimento,
+          cep: cliente.cep,
           estado: cliente.estado,
           cidade: cliente.cidade,
           endereco: cliente.endereco,
