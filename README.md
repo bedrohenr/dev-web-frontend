@@ -1,4 +1,6 @@
-# AngularFutebolApi
+# Cadastro de Cliente e Fornecedores utilizando Firebase
+
+Projeto criado com objetivo de estudar a estrutura do angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.2.
 
