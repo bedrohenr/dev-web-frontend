@@ -1,0 +1,35 @@
+.login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: #B4B8AB;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.logo-bolao{
+    max-width: 300px;
+}
+
+.texto-escuro {
+   color: #153243;
+}
+
+.btn-bolao-login {
+    background-color: #6C757D;
+    color: white;
+}
+
+.email-form-group, .senha-form-group {
+    padding: 10px;
+}
