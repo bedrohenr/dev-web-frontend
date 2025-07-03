@@ -5,7 +5,8 @@ body {
   font-family: Poppins, Helvetica, "sans-serif" !important;
   background-color: #153243 !important;
   color: #FFF;
-  height: 100%;
+  margin: 0px;
+  min-height: 100vh !important;
 }
 
 a:hover,
