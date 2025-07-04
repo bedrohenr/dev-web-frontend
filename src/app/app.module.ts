@@ -10,12 +10,14 @@ import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './core/core.module';
 import { NgxMaskModule } from 'ngx-mask';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
