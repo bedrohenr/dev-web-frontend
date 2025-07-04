@@ -1,4 +1,17 @@
+header {
+  position: fixed;
+  width: 100%;
+}
+
 .main-header {
   background-color: #46494C;
   display: flex;
+  justify-content: center;
+}
+
+.header-item {
+  a {
+    width: 100%;
+  }
+  text-align: center;
 }
