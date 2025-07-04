@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
 
 export const routes: Routes = [
   {
@@ -14,9 +15,14 @@ export const routes: Routes = [
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
-    path:'Fornecedores',
-    loadChildren: () => import('./Fornecedores/fornecedores.module').then(m => m.FornecedoresModule)
-  }
+    path:'criar',
+    component: CreateBolaoComponent,
+    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  // {
+  //   path:'Fornecedores',
+  //   loadChildren: () => import('./Fornecedores/fornecedores.module').then(m => m.FornecedoresModule)
+  // }
 
 ];
 

@@ -11,6 +11,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './core/core.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { LoginComponent } from './components/login/login.component';
+import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { LoginComponent } from './components/login/login.component';
     HeaderComponent,
     HomeComponent,
     LoginComponent,
+    CreateBolaoComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import { LoginComponent } from './components/login/login.component';
     CommonModule,
     ToastrModule,
     CoreModule,
+    FormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
