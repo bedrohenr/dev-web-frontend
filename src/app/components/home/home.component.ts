@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit{
 
 
   ngOnInit(): void {
+    // TODO: Se logado, mostrar Perfil? Meus bolões?
+    //     : Não logado, mostrar login
   }
 
   irParaClientes(){
