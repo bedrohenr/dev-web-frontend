@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
   {
@@ -8,8 +9,9 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path:'Clientes',
-    loadChildren: () => import('./Clientes/clientes.module').then(m => m.ClientesModule)
+    path:'login',
+    component: LoginComponent,
+    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
     path:'Fornecedores',
