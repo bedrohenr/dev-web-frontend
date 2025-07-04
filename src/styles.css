@@ -9,6 +9,10 @@ body {
   min-height: 100vh !important;
 }
 
+app-root {
+  min-height: 100vh !important;
+}
+
 a:hover,
 button:hover,
 a{
