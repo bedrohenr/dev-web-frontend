@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
 import { FormsModule } from '@angular/forms';
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
+import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.com
     LoginComponent,
     CreateBolaoComponent,
     UpdateBolaoComponent,
+    OutcomeBolaoComponent,
   ],
   imports: [
     BrowserModule,

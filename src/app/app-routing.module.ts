@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
+import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,11 @@ export const routes: Routes = [
   {
     path:'update/:id',
     component: UpdateBolaoComponent,
+    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path:'outcome/:id',
+    component: OutcomeBolaoComponent,
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   // {
