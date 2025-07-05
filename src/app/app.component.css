@@ -7,9 +7,3 @@
 
   min-height: 100%;
 }
-
-.content {
-  display: relative;
-  top: 90px;
-  height: 100vh;
-}

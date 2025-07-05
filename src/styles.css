@@ -112,8 +112,8 @@ a{
 
 .content {
   position: relative;
-  top: 90px;
-  height: 100vh;
+  top: 100px;
+  height: calc(100vh - 100px); /* calc: 100% da tela - offset do header (100px)*/
 }
 
 .background-claro {
