@@ -7,23 +7,23 @@
       <span class="fs-1">Bolão</span>
     </div>
     <div class="row">
-      <form>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group email-form-group texto-escuro">
           <label for="inputEmail">Email</label>
-          <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+          <input type="text" formControlName="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Seu email aqui..." required>
         </div>
         <div class="form-group senha-form-group texto-escuro">
           <label for="inputSenha">Senha</label>
-          <input type="password" class="form-control" id="inputSenha">
+          <input type="password" formControlName="senha" class="form-control" id="inputSenha" placeholder="Insira sua senha" required>
         </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-bolao-login">Submit</button>
+          <button type="submit" class="btn btn-bolao-login fs-5 px-3">Entrar</button>
         </div>
         <div class="text-center row p-3">
           <small><a href="">Esqueci minha senha</a></small>
         </div>
         <div class="text-center row p-3">
-          <small><a href="">Crie uma conta</a></small>
+          <a href="" [routerLink]="['/sign-up']">Crie uma conta</a>
         </div>
       </form>
     </div>
