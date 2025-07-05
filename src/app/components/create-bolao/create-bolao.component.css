@@ -19,3 +19,8 @@
   border-radius: 10px;
   padding: 5px;
 }
+
+.input-visibilidade {
+  height: 50%;
+  align-items: end;
+}

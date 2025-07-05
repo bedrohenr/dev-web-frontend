@@ -5,34 +5,34 @@
     </div>
     <div class="col-4 p-2 text-right">
       <button class="btn btn-info mx-2">Voltar</button>
-      <button class="btn btn-success mx-2">Criar</button>
+      <button class="btn btn-success mx-2" (click)="onSubmit()">Criar</button>
     </div>
   </div>
 </div>
 <div class="container form-container">
-  <form>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row">
 
       <div class="col-8 form-group titulo-form-group texto-escuro">
         <label for="inputTitulo">Titulo</label>
-        <input type="text" class="form-control" id="inputTitulo">
+        <input type="text" formControlName="titulo" class="form-control" id="inputTitulo" placeholder="Titulo do bolão">
       </div>
 
       <div class="col-4 form-group titulo-form-group texto-escuro">
         <label for="flexVisibilidadeBolao">Visibilidade do Bolão</label>
-        <div class="row">
+        <div class="row input-visibilidade">
           <div class="col-6">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexVisibilidadeBolao" id="visibilidadeBolaoPriv" checked>
-              <label class="form-check-label" for="visibilidadeBolao">
+              <input class="form-check-input" formControlName="visibilidade" type="radio" id="visibilidadeBolaoPriv" value="1">
+              <label class="form-check-label" for="visibilidadeBolaoPriv">
                 Privado
               </label>
             </div>
           </div>
           <div class="col-6">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexVisibilidadeBolao" id="visibilidadeBolaoPub">
-              <label class="form-check-label" for="visibilidadeBolaoPub">
+              <input class="form-check-input" formControlName="visibilidade" type="radio" id="visibilidadeBolaoPub" value="2">
+              <label class="form-check-label" for="visibilidadeBolaoPub" >
                 Público
               </label>
             </div>
@@ -42,36 +42,36 @@
 
       <div class="col-12 form-group descricao-form-group texto-escuro">
         <label for="inputDescricao">Descricao</label>
-        <input type="text" class="form-control" id="inputDescricao">
+        <input type="text" formControlName="descricao" class="form-control" id="inputDescricao" placeholder="Descrição do bolão">
       </div>
       <div class="col-12 form-group tipo-resposta-form-group texto-escuro">
         <label for="tipoResposta">Tipo de Resposta</label>
-        <select [(ngModel)]="tipoResposta" class="form-select" name="tipoResposta" id="tipoResposta">
+        <select formControlName="tipoResposta" class="form-select" name="tipoResposta" id="tipoResposta">
           <option selected disabled value="">Selecione...</option>
           <option value="1">Placar Esportivo</option>
           <option value="2">Outros</option>
         </select>
       </div>
 
-      <div *ngIf="tipoResposta === '1'" class="col-12">
+      <div *ngIf="this.form.get('tipoResposta')?.value === '1'" class="col-12">
         <div class="tipo-resposta-container">
           <div class="col-12 form-group">
             <span class="fs-4 text-center">Placar Esportivo</span>
           </div>
           <div class="row form-group">
             <div class="col-6 form-group time-form-group texto-escuro">
-              <label for="inputTimeCasa">Time 1</label>
-              <input type="text" class="form-control" id="inputTimeCasa">
+              <label for="inputTimeCasa">Time da casa</label>
+              <input type="text" class="form-control" id="inputTimeCasa" placeholder="Placar do time da casa">
             </div>
             <div class="col-6 form-group time-form-group texto-escuro">
-              <label for="inputTimeVisitante">Time 2</label>
-              <input type="text" class="form-control" id="inputTimeVisitante">
+              <label for="inputTimeVisitante">Time Visitante</label>
+              <input type="text" class="form-control" id="inputTimeVisitante" placeholder="Placar do time visitante">
             </div>
           </div>
         </div>
       </div>
 
-      <div *ngIf="tipoResposta === '2'" class="col-12">
+      <div *ngIf="this.form.get('tipoResposta')?.value === '2'" class="col-12">
         <div class="tipo-resposta-container">
           <div class="col-12 form-group">
             <span class="fs-4 text-center">Outros</span>
