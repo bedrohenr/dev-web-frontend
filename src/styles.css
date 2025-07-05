@@ -115,3 +115,19 @@ a{
   top: 90px;
   height: 100vh;
 }
+
+.background-claro {
+  width: 100%;
+  background-color: #B4B8AB;
+  border-radius: 10px;
+  padding: 20px;
+  vertical-align: middle;
+}
+
+.texto-escuro {
+   color: #153243;
+}
+
+.texto-cinza {
+  color: #C7C7C4;
+}
