@@ -12,7 +12,8 @@ import { CoreModule } from './core/core.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { LoginComponent } from './components/login/login.component';
 import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule } from '@angular/forms';
+import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
     HomeComponent,
     LoginComponent,
     CreateBolaoComponent,
+    UpdateBolaoComponent,
   ],
   imports: [
     BrowserModule,

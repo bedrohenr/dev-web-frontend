@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
+import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 
 export const routes: Routes = [
   {
@@ -15,8 +16,13 @@ export const routes: Routes = [
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
-    path:'criar',
+    path:'create',
     component: CreateBolaoComponent,
+    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path:'update/:id',
+    component: UpdateBolaoComponent,
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   // {
