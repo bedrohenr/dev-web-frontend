@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 export const routes: Routes = [
   {
@@ -31,11 +32,11 @@ export const routes: Routes = [
     component: OutcomeBolaoComponent,
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
-  // {
-  //   path:'Fornecedores',
-  //   loadChildren: () => import('./Fornecedores/fornecedores.module').then(m => m.FornecedoresModule)
-  // }
-
+  {
+    path:'sign-up',
+    component: SignUpComponent,
+    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  },
 ];
 
 @NgModule({

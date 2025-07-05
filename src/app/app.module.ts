@@ -12,9 +12,10 @@ import { CoreModule } from './core/core.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { LoginComponent } from './components/login/login.component';
 import { CreateBolaoComponent } from './components/create-bolao/create-bolao.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.
     CreateBolaoComponent,
     UpdateBolaoComponent,
     OutcomeBolaoComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,8 @@ import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.
     CommonModule,
     ToastrModule,
     CoreModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
