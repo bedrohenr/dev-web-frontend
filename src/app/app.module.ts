@@ -36,7 +36,8 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
     ToastrModule,
     CoreModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
