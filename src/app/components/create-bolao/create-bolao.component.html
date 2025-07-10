@@ -1,11 +1,11 @@
 <div class="container title-container">
-  <div class="row">
+  <div class="row p-4">
     <div class="col-8 text-white text-left ">
       <span class="fs-3">Criar um bolão</span>
     </div>
-    <div class="col-4 p-2 text-right">
+    <div class="col-4 text-center">
       <button class="btn btn-info mx-2">Voltar</button>
-      <button class="btn btn-success mx-2" (click)="onSubmit()">Criar</button>
+      <button class="btn btn-success mx-2" (click)="onSubmit()">Criar Bolão</button>
     </div>
   </div>
 </div>
@@ -44,49 +44,27 @@
         <label for="inputDescricao">Descricao</label>
         <input type="text" formControlName="descricao" class="form-control" id="inputDescricao" placeholder="Descrição do bolão">
       </div>
-      <div class="col-12 form-group tipo-resposta-form-group texto-escuro">
-        <label for="tipoResposta">Tipo de Resposta</label>
-        <select formControlName="tipoResposta" class="form-select" name="tipoResposta" id="tipoResposta">
-          <option selected disabled value="">Selecione...</option>
-          <option value="1">Placar Esportivo</option>
-          <option value="2">Outros</option>
-        </select>
-      </div>
 
-      <div *ngIf="this.form.get('tipoResposta')?.value === '1'" class="col-12">
-        <div class="tipo-resposta-container">
-          <div class="col-12 form-group">
-            <span class="fs-4 text-center">Placar Esportivo</span>
+      <div class="col-12">
+        <label for="inputDescricao">Opções do bolão</label>
+        <div formArrayName="opcoes">
+          <div *ngFor="let opcaoControl of opcoesArray.controls; let i = index" class="form-group texto-escuro d-flex align-items-center row">
+            <div class="col-10">
+              <label [for]="'opcao-' + i">Opção {{ i + 1 }}</label>
+              <input [formControlName]="i" [id]="'opcao-' + i" type="text" class="form-control" placeholder="Descrição da opção {{i + 1}}" required>
+            </div>
+            <div class="col-2 align-items-end h-100">
+              <button type="button" class="btn btn-danger btn-sm" (click)="removeOpcao(i)">Remover</button>
+            </div>
           </div>
-          <div class="row form-group">
-            <div class="col-6 form-group time-form-group texto-escuro">
-              <label for="inputTimeCasa">Time da casa</label>
-              <input type="text" class="form-control" id="inputTimeCasa" placeholder="Placar do time da casa">
-            </div>
-            <div class="col-6 form-group time-form-group texto-escuro">
-              <label for="inputTimeVisitante">Time Visitante</label>
-              <input type="text" class="form-control" id="inputTimeVisitante" placeholder="Placar do time visitante">
-            </div>
+          <div *ngIf="opcoesArray.invalid && (opcoesArray.dirty || opcoesArray.touched)" class="text-danger">
+              <div *ngIf="opcoesArray.errors?.['required']">Todas as opções são obrigatórias.</div>
           </div>
         </div>
-      </div>
-
-      <div *ngIf="this.form.get('tipoResposta')?.value === '2'" class="col-12">
-        <div class="tipo-resposta-container">
-          <div class="col-12 form-group">
-            <span class="fs-4 text-center">Outros</span>
-          </div>
-          <div class="row form-group">
-            <div class="col-12 form-group time-form-group texto-escuro">
-              <label for="inputEscolha1">Resposta 1</label>
-              <input type="text" class="form-control" id="inputEscolha1">
-            </div>
-            <div class="col-12 form-group time-form-group texto-escuro">
-              <label for="inputEscolha2">Resposta 2</label>
-              <input type="text" class="form-control" id="inputEscolha2">
-            </div>
-          </div>
+        <div class="col-12 text-center">
+          <button type="button" class="btn btn-success btn-sm mt-2" (click)="addOpcao()">+ Adicionar Opção</button>
         </div>
+        <br>
       </div>
     </div>
   </form>
