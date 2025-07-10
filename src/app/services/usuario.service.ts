@@ -8,7 +8,7 @@ import { Observable } from 'rxjs'; // Para trabalhar com observables
 })
 export class UsuarioService {
   // backend Node.js
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = 'http://localhost:8000/api/user';
 
   constructor(private http: HttpClient) { } // Injete o HttpClient
 
@@ -18,7 +18,7 @@ export class UsuarioService {
    * @returns Um Observable com a resposta da API.
    */
   cadastrarUsuario(userData: any): Observable<any> {
-    const apiCadastrarEndpoint = '/user/post-user';
+    const apiCadastrarEndpoint = '/post-user';
     const url = `${this.apiUrl}${apiCadastrarEndpoint}`;
     return this.http.post<any>(url, userData);
   }
