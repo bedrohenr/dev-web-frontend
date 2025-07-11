@@ -22,11 +22,4 @@ export class UsuarioService {
     const url = `${this.apiUrl}${apiCadastrarEndpoint}`;
     return this.http.post<any>(url, userData);
   }
-
-  autenticacao(userData: any): Observable<any> {
-    const apiLogin = '/user/login';
-    const url = `${this.apiUrl}${apiLogin}`;
-    return this.http.post<any>(url, userData);
-  }
-
 }
