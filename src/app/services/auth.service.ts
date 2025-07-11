@@ -35,7 +35,10 @@ export class AuthService {
         if (response.user.token) {
           localStorage.setItem('access_token', response.user.token);
           // Opcional: armazenar dados do usuário também
-          localStorage.setItem('user_data', JSON.stringify(response.user));
+          localStorage.setItem('user_data', JSON.stringify(response.user.user));
+          localStorage.setItem('user_id', response.user.id);
+          localStorage.setItem('user_name', response.user.nome);
+          localStorage.setItem('user_email', response.user.email);
           this._isLoggedIn.next(true); // Atualiza o estado de login
         }
       })

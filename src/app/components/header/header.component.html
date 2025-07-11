@@ -1,23 +1,29 @@
 <header>
   <nav class="navbar main-header">
     <div class="container row">
-      <div class="header-item col-12 col-md-2">
-        <a class="navbar-brand fs-1 text-white initial" href="#">Bolão</a>
+      <div class="header-item col-8">
+        <a class="navbar-brand fs-1 text-white text-left" href="#">Bolão</a>
       </div>
-      <div class="header-item col-2 col-md-2">
+      <div class="header-item col-4 col-md-2 text-white">
+        <div class="" *ngIf="user !== null">
+          Logado como: {{ user }} <br> {{ email }}
+          <a class="navbar-brand text-center" href="#">Sair</a>
+        </div>
+        <div class="" *ngIf="user === null">
+          Usuário não logado
+        </div>
+      </div>
+      <div class="header-item col-3">
         <a class="navbar-brand fs-6 text-white text-center" href="#">Perfil</a>
       </div>
-      <div class="header-item col-4 col-md-2">
+      <div class="header-item col-3">
         <a class="navbar-brand fs-6 text-white text-center text-wrap" href="#">Meus Bolões</a>
       </div>
-      <div class="header-item col-2 col-md-2">
+      <div class="header-item col-3">
         <a class="navbar-brand fs-6 text-white text-center" href="#">Criar</a>
       </div>
-      <div class="header-item col-2 col-md-2">
+      <div class="header-item col-3">
         <a class="navbar-brand fs-6 text-white text-center" href="#">Entrar</a>
-      </div>
-      <div class="header-item col-2 col-md-2">
-        <a class="navbar-brand fs-6 text-white text-center" href="#">Sair</a>
       </div>
     </div>
   </nav>
