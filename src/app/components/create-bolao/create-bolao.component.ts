@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../services/usuario.service';
 import { Component } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +18,8 @@ export class CreateBolaoComponent {
     private route: ActivatedRoute,
     private router: Router,
     private bolaoService: BolaoService,
-    private mensageriaService: MensageriaService
+    private mensageriaService: MensageriaService,
+    private usuarioService: UsuarioService
   ) {
     this.form = new FormGroup({
       titulo: new FormControl('', [Validators.required]),
@@ -43,7 +45,7 @@ export class CreateBolaoComponent {
   }
 
   removeOpcao(index: number): void {
-    if (this.opcoesArray.length > 2) { 
+    if (this.opcoesArray.length > 2) {
       this.opcoesArray.removeAt(index);
     } else {
       this.mensageriaService.mensagemErro('É necessário ter pelo menos duas opções!');
@@ -62,16 +64,39 @@ export class CreateBolaoComponent {
 
   onSubmit(){
     if(this.form.invalid){
-      this.form.markAllAsTouched(); 
+      this.form.markAllAsTouched();
       return;
+    } else {
+      const dados = {
+        nome: this.form.value.titulo,
+        descricao: this.form.value.descricao,
+        criadorId: this.usuarioService.getIdUsuarioLogado(), // Não tem autenticação ainda
+        opcoes: this.form.value.opcoes
+      };
+
+       this.bolaoService.criarBolao(dados).subscribe({
+        next: (response) => {
+          console.log('Bolão criado!', response);
+
+          // Retornar a pagina login após criado
+          alert(response.message);
+          // this.router.navigate(['login'])
+        },
+          error: (error) => {
+            console.error('Erro na criação de bolão:', error);
+            const criacaoErro = error.error.message || 'Ocorreu um erro no login. Tente novamente.';
+
+            alert(criacaoErro);
+          }
+        });
     }
 
     this.isLoading = true;
-    
+
     const dados = {
       nome: this.form.value.titulo,
       descricao: this.form.value.descricao,
-      criadorId: 1, 
+      criadorId: 1,
       opcoes: this.form.value.opcoes
     };
 
