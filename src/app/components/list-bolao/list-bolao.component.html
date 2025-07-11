@@ -120,6 +120,9 @@
               <span [class]="getStatusClass(bolao.ativo)" class="ms-1">
                 {{ getStatusTexto(bolao.ativo) }}
               </span>
+              <span class="badge bg-success ms-1" *ngIf="bolao.palpiteUsuario">
+                <i class="las la-check"></i> Palpitado
+              </span>
             </div>
           </div>
           <div class="dropdown">
@@ -128,6 +131,12 @@
               <i class="las la-ellipsis-v"></i>
             </button>
             <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="#" (click)="palpitar(bolao); $event.preventDefault()">
+                  <i class="las la-hand-point-up"></i> Palpitar
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
               <li>
                 <a class="dropdown-item" href="#" (click)="visualizarBolao(bolao); $event.preventDefault()">
                   <i class="las la-trophy"></i> Ver Resultado
@@ -182,12 +191,22 @@
 
         <div class="card-footer">
           <div class="row">
-            <div class="col-6">
-              <button class="btn btn-primary btn-sm w-100" (click)="visualizarBolao(bolao)">
-                <i class="las la-trophy"></i> Ver Resultado
+            <div class="col-4">
+              <button 
+                class="btn btn-warning btn-sm w-100" 
+                (click)="palpitar(bolao)"
+                [disabled]="!bolao.ativo || isLoading"
+                [title]="!bolao.ativo ? 'Bolão inativo' : (bolao.palpiteUsuario ? 'Alterar palpite' : 'Fazer um palpite')">
+                <i class="las la-hand-point-up"></i> 
+                {{ bolao.palpiteUsuario ? 'Alterar' : 'Palpitar' }}
               </button>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+              <button class="btn btn-primary btn-sm w-100" (click)="visualizarBolao(bolao)">
+                <i class="las la-trophy"></i> Resultado
+              </button>
+            </div>
+            <div class="col-4">
               <button class="btn btn-outline-primary btn-sm w-100" (click)="editarBolao(bolao)">
                 <i class="las la-edit"></i> Editar
               </button>
@@ -220,4 +239,78 @@
       </div>
     </div>
   </ng-template>
+</div>
+
+<!-- Modal de Palpite -->
+<div class="modal fade" id="palpiteModal" tabindex="-1" aria-labelledby="palpiteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="palpiteModalLabel">
+          <i class="las la-hand-point-up"></i> Fazer Palpite
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="bolaoSelecionado">
+        <div class="mb-3">
+          <h6 class="fw-bold">{{ bolaoSelecionado.nome }}</h6>
+          <p class="text-muted">{{ bolaoSelecionado.descricao }}</p>
+          <div class="alert alert-success d-flex align-items-center" *ngIf="bolaoSelecionado.palpiteUsuario" role="alert">
+            <i class="las la-info-circle me-2"></i>
+            <small>Seu palpite atual: <strong>{{ bolaoSelecionado.palpiteUsuario }}</strong></small>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold">Escolha sua opção:</label>
+          <div class="row">
+            <div class="col-12" *ngFor="let opcao of bolaoSelecionado.opcoes; let i = index">
+              <div class="form-check mb-2">
+                <input 
+                  class="form-check-input" 
+                  type="radio" 
+                  [id]="'opcao_' + i" 
+                  name="opcaoEscolhida" 
+                  [value]="opcao"
+                  [(ngModel)]="opcaoEscolhida">
+                <label class="form-check-label w-100" [for]="'opcao_' + i">
+                  <div class="d-flex align-items-center p-3 rounded border" 
+                       [class.border-primary]="opcaoEscolhida === opcao"
+                       [class.bg-light]="opcaoEscolhida === opcao">
+                    <div class="me-3">
+                      <i class="las la-futbol text-primary" *ngIf="opcao.toLowerCase().includes('gol') || opcao.toLowerCase().includes('futebol')"></i>
+                      <i class="las la-trophy text-warning" *ngIf="opcao.toLowerCase().includes('campeão') || opcao.toLowerCase().includes('vencedor')"></i>
+                      <i class="las la-balance-scale text-secondary" *ngIf="opcao.toLowerCase().includes('empate')"></i>
+                      <i class="las la-star text-success" *ngIf="!opcao.toLowerCase().includes('gol') && !opcao.toLowerCase().includes('campeão') && !opcao.toLowerCase().includes('empate') && !opcao.toLowerCase().includes('vencedor') && !opcao.toLowerCase().includes('futebol')"></i>
+                    </div>
+                    <span class="flex-grow-1 fw-bold">{{ opcao }}</span>
+                    <i class="las la-check-circle text-primary fs-5" *ngIf="opcaoEscolhida === opcao"></i>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info d-flex align-items-center" role="alert">
+          <i class="las la-info-circle me-2"></i>
+          <small>Você pode alterar seu palpite a qualquer momento antes do encerramento do bolão.</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="las la-times"></i> Cancelar
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="confirmarPalpite()"
+          [disabled]="!opcaoEscolhida || isLoading">
+          <i class="las la-check" *ngIf="!isLoading"></i>
+          <i class="las la-spinner-third la-spin" *ngIf="isLoading"></i>
+          {{ isLoading ? 'Salvando...' : (bolaoSelecionado?.palpiteUsuario ? 'Alterar Palpite' : 'Confirmar Palpite') }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

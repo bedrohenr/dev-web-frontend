@@ -197,6 +197,87 @@
   height: 3rem;
 }
 
+/* Botão de Palpitar */
+.btn-warning {
+  background-color: #ff9500;
+  border-color: #ff9500;
+  color: #fff;
+}
+
+.btn-warning:hover {
+  background-color: #e6860a;
+  border-color: #e6860a;
+  color: #fff;
+}
+
+.btn-warning:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+  opacity: 0.65;
+}
+
+/* Modal de Palpite */
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header .modal-title {
+  color: #333;
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.form-check-label {
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.form-check-label .rounded {
+  transition: all 0.2s ease;
+}
+
+.form-check-label .rounded:hover {
+  background-color: #f8f9fa !important;
+}
+
+.form-check-input:checked + .form-check-label .rounded {
+  background-color: #e3f2fd !important;
+  border-color: #2196f3 !important;
+}
+
+/* Spinner animation */
+.la-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ajustes para botões pequenos no card-footer */
+.card-footer .btn-sm {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.card-footer .col-4 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .title-container .col-8,
@@ -220,6 +301,17 @@
   
   .dropdown {
     position: static;
+  }
+}
+
+/* Responsividade para o modal */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 1rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
   }
 }
 

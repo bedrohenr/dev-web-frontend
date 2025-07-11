@@ -4,10 +4,10 @@
       <span class="fs-3">Criar um bolão</span>
     </div>
     <div class="col-4  text-end">
-      <button class="btn btn-info mx-2" appHandleBack [disabled]="isLoading">Voltar</button>
+      <button class="btn btn-info mx-2" appHandleBack [disabled]="isLoading"><i class="las la-undo me-1"></i>Voltar</button>
       <button class="btn btn-success mx-2" (click)="onSubmit()" [disabled]="isLoading">
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-        {{ isLoading ? 'Criando...' : 'Criar Bolão' }}
+        <i class="las la-save me-i"></i>{{ isLoading ? 'Criando...' : 'Criar Bolão' }}
       </button>
     </div>
   </div>
@@ -17,7 +17,7 @@
     <div class="row">
 
       <div class="col-12 form-group titulo-form-group texto-escuro">
-        <label for="inputTitulo">Titulo <span class="text-danger">*</span></label>
+        <label for="inputTitulo">Titulo: <span class="text-danger">*</span></label>
         <input type="text"
                formControlName="titulo"
                class="form-control"
@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-12 form-group descricao-form-group texto-escuro">
-        <label for="inputDescricao">Descricao <span class="text-danger">*</span></label>
+        <label for="inputDescricao">Descricao: <span class="text-danger">*</span></label>
         <input type="text"
                formControlName="descricao"
                class="form-control"
@@ -43,44 +43,47 @@
       </div>
 
       <div class="col-12">
-        <label for="inputDescricao">Opções do bolão <span class="text-danger">*</span></label>
-        <div formArrayName="opcoes">
-          <div *ngFor="let opcaoControl of opcoesArray.controls; let i = index" class="form-group texto-escuro d-flex align-items-center row">
-            <div class="col-10">
-              <label [for]="'opcao-' + i">Opção {{ i + 1 }} <span class="text-danger">*</span></label>
-              <input [formControlName]="i"
-                     [id]="'opcao-' + i"
-                     type="text"
-                     class="form-control"
-                     [class.is-invalid]="hasOptionError(i)"
-                     placeholder="Descrição da opção {{i + 1}}"
-                     required>
-              <div *ngIf="hasOptionError(i)" class="invalid-feedback">
-                Esta opção é obrigatória.
+        <div class="card bg-light p-3">
+          <label for="inputDescricao" class="text-bold"><strong>Opções do bolão:</strong>  <span class="text-danger">*</span></label>
+          <div formArrayName="opcoes">
+            <div *ngFor="let opcaoControl of opcoesArray.controls; let i = index" class="form-group texto-escuro d-flex align-items-center row">
+              <div class="col-10">
+                <label [for]="'opcao-' + i">Opção {{ i + 1 }} <span class="text-danger">*</span></label>
+                <input [formControlName]="i"
+                       [id]="'opcao-' + i"
+                       type="text"
+                       class="form-control"
+                       [class.is-invalid]="hasOptionError(i)"
+                       placeholder="Descrição da opção {{i + 1}}"
+                       required>
+                <div *ngIf="hasOptionError(i)" class="invalid-feedback">
+                  Esta opção é obrigatória.
+                </div>
+              </div>
+              <div class="col-2 align-items-end mt-4 h-100">
+                <button type="button"
+                        class="btn btn-danger btn-sm"
+                        (click)="removeOpcao(i)"
+                        [disabled]="isLoading">
+                        <i class="las la-trash me-1"></i>
+                  Remover
+                </button>
               </div>
             </div>
-            <div class="col-2 align-items-end h-100">
-              <button type="button"
-                      class="btn btn-danger btn-sm"
-                      (click)="removeOpcao(i)"
-                      [disabled]="isLoading">
-                Remover
-              </button>
+            <div *ngIf="hasOptionsArrayError()" class="text-danger mt-2">
+                <div *ngIf="opcoesArray.errors?.['minOptions']">É necessário ter pelo menos {{ opcoesArray.errors?.['minOptions'].required }} opções.</div>
             </div>
           </div>
-          <div *ngIf="hasOptionsArrayError()" class="text-danger mt-2">
-              <div *ngIf="opcoesArray.errors?.['minOptions']">É necessário ter pelo menos {{ opcoesArray.errors?.['minOptions'].required }} opções.</div>
+          <div class="col-12 text-center">
+            <button type="button"
+                    class="btn btn-success btn-sm mt-2"
+                    (click)="addOpcao()"
+                    [disabled]="isLoading">
+              + Adicionar Opção
+            </button>
           </div>
+          <br>
         </div>
-        <div class="col-12 text-center">
-          <button type="button"
-                  class="btn btn-success btn-sm mt-2"
-                  (click)="addOpcao()"
-                  [disabled]="isLoading">
-            + Adicionar Opção
-          </button>
-        </div>
-        <br>
       </div>
     </div>
   </form>

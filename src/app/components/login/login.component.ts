@@ -32,7 +32,7 @@ export class LoginComponent {
 
   onSubmit(){
     if(this.form.invalid){
-      alert("Formulário invalido...");
+      this.mensageriaService.mensagemErro("Formulário invalido...");
     } else {
        const dados = {
         email: this.form.value.email,
@@ -65,7 +65,7 @@ export class LoginComponent {
           console.error('Erro na tentativa de login:', error);
           this.loginErro = error.error.message || 'Ocorreu um erro no login. Tente novamente.';
 
-          alert(this.loginErro);
+          this.mensageriaService.mensagemErro(this.loginErro ?? '');
           this.form.markAllAsTouched();
         }
       });

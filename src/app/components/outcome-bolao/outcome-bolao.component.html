@@ -123,43 +123,161 @@
     </div>
   </div>
 
+  <!-- Estatísticas dos Palpites -->
+  <div class="row" *ngIf="participantes.length > 0">
+    <div class="col-12">
+      <h6 class="text-white mb-3">
+        <i class="las la-chart-bar me-2"></i>
+        Estatísticas dos Palpites
+      </h6>
+      
+      <div class="row">
+        <div class="col-md-4 mb-3" *ngFor="let opcao of getEstatisticasPorOpcao()">
+          <div class="card bg-dark border-secondary">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="card-title text-white mb-1">{{ opcao.nome }}</h6>
+                  <p class="card-text">
+                    <span class="badge" [class]="opcao.isVencedora ? 'bg-success' : 'bg-primary'">
+                      {{ opcao.quantidade }} {{ opcao.quantidade === 1 ? 'palpite' : 'palpites' }}
+                    </span>
+                  </p>
+                  <small class="text-muted">{{ opcao.porcentagem }}% dos palpites</small>
+                </div>
+                <div>
+                  <i class="las la-crown text-warning fs-3" *ngIf="opcao.isVencedora"></i>
+                  <i class="las la-hand-point-up text-primary fs-3" *ngIf="!opcao.isVencedora"></i>
+                </div>
+              </div>
+              
+              <!-- Barra de progresso -->
+              <div class="progress mt-2" style="height: 6px;">
+                <div class="progress-bar" 
+                     [class]="opcao.isVencedora ? 'bg-success' : 'bg-primary'"
+                     role="progressbar" 
+                     [style.width.%]="opcao.porcentagem">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Tabela de participantes (se houver apostas) -->
   <div class="row" *ngIf="participantes.length > 0">
     <div class="col-12">
-      <h6 class="text-white mb-3">Palpites dos Participantes</h6>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Participante</th>
-            <th scope="col">Palpite</th>
-            <th scope="col" *ngIf="temGanhador()">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let participante of participantes" 
-              [class]="participante.isGanhador ? 'table-success' : ''">
-            <th scope="row" 
-                [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
-              {{ participante.posicao }}
-            </th>
-            <td [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
-              {{ participante.nome }}
-              <i class="fas fa-crown text-warning ms-2" *ngIf="participante.isGanhador"></i>
-            </td>
-            <td [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
-              {{ participante.palpite }}
-            </td>
-            <td *ngIf="temGanhador()" 
-                [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
-              <span class="badge" 
-                    [class]="participante.isGanhador ? 'bg-success' : 'bg-secondary'">
-                {{ participante.isGanhador ? 'GANHOU' : 'Perdeu' }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <h6 class="text-white mb-3">
+        <i class="las la-users me-2"></i>
+        Palpites dos Participantes ({{ participantes.length }})
+      </h6>
+      
+      <!-- Versão desktop -->
+      <div class="d-none d-md-block">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">#</th>
+              <th scope="col">
+                <i class="las la-user me-1"></i>
+                Participante
+              </th>
+              <th scope="col">
+                <i class="las la-hand-point-up me-1"></i>
+                Palpite
+              </th>
+              <th scope="col">
+                <i class="las la-clock me-1"></i>
+                Data do Palpite
+              </th>
+              <th scope="col" *ngIf="temGanhador()" class="text-center">
+                <i class="las la-trophy me-1"></i>
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let participante of participantes" 
+                [class]="participante.isGanhador ? 'table-success' : ''">
+              <th scope="row" class="text-center"
+                  [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+                {{ participante.posicao }}
+              </th>
+              <td [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+                <div class="d-flex align-items-center">
+                  <i class="las la-user-circle me-2 fs-5"></i>
+                  {{ participante.nome }}
+                  <i class="las la-crown text-warning ms-2" *ngIf="participante.isGanhador"></i>
+                </div>
+              </td>
+              <td [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+                <span class="badge me-2" 
+                      [class]="participante.isGanhador ? 'bg-success' : 'bg-primary'">
+                  {{ participante.palpite }}
+                </span>
+              </td>
+              <td class="text-muted">
+                <small>{{ formatarDataPalpite(participante.dataPalpite) }}</small>
+              </td>
+              <td *ngIf="temGanhador()" class="text-center"
+                  [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+                <span class="badge" 
+                      [class]="participante.isGanhador ? 'bg-success' : 'bg-secondary'">
+                  <i class="las" [class]="participante.isGanhador ? 'la-trophy' : 'la-times'"></i>
+                  {{ participante.isGanhador ? 'GANHOU' : 'Perdeu' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Versão mobile -->
+      <div class="d-block d-md-none">
+        <div class="row">
+          <div class="col-12" *ngFor="let participante of participantes">
+            <div class="card mb-3" 
+                 [class]="participante.isGanhador ? 'border-success bg-success bg-opacity-10' : 'bg-dark'">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h6 class="card-title mb-0" 
+                      [class]="participante.isGanhador ? 'text-success fw-bold' : 'text-white'">
+                    <i class="las la-user-circle me-2"></i>
+                    {{ participante.nome }}
+                    <i class="las la-crown text-warning ms-2" *ngIf="participante.isGanhador"></i>
+                  </h6>
+                  <span class="badge bg-secondary">#{{ participante.posicao }}</span>
+                </div>
+                
+                <div class="mb-2">
+                  <strong class="text-white">Palpite:</strong>
+                  <span class="badge ms-2" 
+                        [class]="participante.isGanhador ? 'bg-success' : 'bg-primary'">
+                    {{ participante.palpite }}
+                  </span>
+                </div>
+                
+                <div class="mb-2" *ngIf="participante.dataPalpite">
+                  <small class="text-muted">
+                    <i class="las la-clock me-1"></i>
+                    {{ formatarDataPalpite(participante.dataPalpite) }}
+                  </small>
+                </div>
+                
+                <div *ngIf="temGanhador()">
+                  <span class="badge" 
+                        [class]="participante.isGanhador ? 'bg-success' : 'bg-secondary'">
+                    <i class="las" [class]="participante.isGanhador ? 'la-trophy' : 'la-times'"></i>
+                    {{ participante.isGanhador ? 'GANHOU' : 'Perdeu' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

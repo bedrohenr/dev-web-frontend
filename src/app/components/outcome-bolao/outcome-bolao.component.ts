@@ -36,6 +36,9 @@ export interface ParticipanteResultado {
   nome: string;
   palpite: string;
   isGanhador: boolean;
+  userId: number;
+  opcaoId: number;
+  dataPalpite?: string;
 }
 
 @Component({
@@ -47,6 +50,7 @@ export class OutcomeBolaoComponent implements OnInit {
   bolao: BolaoDetalhado | null = null;
   participantes: ParticipanteResultado[] = [];
   ganhadores: string[] = [];
+  palpitesDetalhados: any[] = []; // Lista detalhada de palpites carregados da API
   isLoading = false;
   bolaoId: number = 0;
 
@@ -73,14 +77,30 @@ export class OutcomeBolaoComponent implements OnInit {
       next: (response) => {
         console.log('Dados do bolão:', response);
         this.bolao = response;
-        this.processarResultados();
-        this.isLoading = false;
+        this.carregarPalpites(); // Carregar palpites após carregar o bolão
       },
       error: (error) => {
         console.error('Erro ao carregar dados do bolão:', error);
         this.isLoading = false;
         this.mensageriaService.mensagemErro('Erro ao carregar os dados do bolão. Tente novamente.');
         this.router.navigate(['/boloes']);
+      }
+    });
+  }
+
+  carregarPalpites(): void {
+    this.bolaoService.obterPalpitesBolao(this.bolaoId).subscribe({
+      next: (response) => {
+        console.log('Palpites do bolão:', response);
+        this.palpitesDetalhados = response.data || [];
+        this.processarResultados();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar palpites:', error);
+        // Mesmo se falhar ao carregar palpites, processar com dados existentes
+        this.processarResultados();
+        this.isLoading = false;
       }
     });
   }
@@ -92,7 +112,46 @@ export class OutcomeBolaoComponent implements OnInit {
     this.participantes = [];
     this.ganhadores = [];
 
-    // Se não há opções, não há resultados para processar
+    // Se há palpites detalhados da API, usar eles
+    if (this.palpitesDetalhados && this.palpitesDetalhados.length > 0) {
+      const participantesMap = new Map<number, ParticipanteResultado>();
+
+      this.palpitesDetalhados.forEach(palpite => {
+        const isGanhador = this.bolao!.opcaoId === palpite.opcao.id;
+        
+        if (!participantesMap.has(palpite.apostador.id)) {
+          participantesMap.set(palpite.apostador.id, {
+            posicao: isGanhador ? 1 : 0,
+            nome: palpite.apostador.nome,
+            palpite: palpite.opcao.descricao,
+            isGanhador: isGanhador,
+            userId: palpite.apostador.id,
+            opcaoId: palpite.opcao.id,
+            dataPalpite: palpite.createdAt
+          });
+          
+          if (isGanhador) {
+            this.ganhadores.push(palpite.apostador.nome);
+          }
+        }
+      });
+
+      // Converter para array e ordenar (ganhadores primeiro)
+      this.participantes = Array.from(participantesMap.values())
+        .sort((a, b) => {
+          if (a.isGanhador && !b.isGanhador) return -1;
+          if (!a.isGanhador && b.isGanhador) return 1;
+          return a.nome.localeCompare(b.nome);
+        })
+        .map((participante, index) => ({
+          ...participante,
+          posicao: index + 1
+        }));
+      
+      return;
+    }
+
+    // Fallback: usar dados das apostas incluídas no bolão (código original)
     if (!this.bolao.opcoes || this.bolao.opcoes.length === 0) {
       return;
     }
@@ -111,7 +170,9 @@ export class OutcomeBolaoComponent implements OnInit {
               posicao: isGanhador ? 1 : posicao,
               nome: aposta.apostador.nome,
               palpite: opcao.descricao,
-              isGanhador: isGanhador
+              isGanhador: isGanhador,
+              userId: aposta.apostador.id,
+              opcaoId: opcao.id
             });
             
             if (isGanhador) {
@@ -163,6 +224,10 @@ export class OutcomeBolaoComponent implements OnInit {
   }
 
   getTotalParticipantes(): number {
+    // Preferir contagem de palpites detalhados se disponível
+    if (this.palpitesDetalhados && this.palpitesDetalhados.length > 0) {
+      return this.palpitesDetalhados.length;
+    }
     return this.participantes.length;
   }
 
@@ -181,5 +246,42 @@ export class OutcomeBolaoComponent implements OnInit {
 
   getCriadorInfo(): string {
     return this.bolao?.criador?.nome || 'Criador não identificado';
+  }
+
+  formatarDataPalpite(dataPalpite?: string): string {
+    if (!dataPalpite) return '';
+    
+    const data = new Date(dataPalpite);
+    return data.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit', 
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  getEstatisticasPorOpcao(): any[] {
+    if (!this.bolao?.opcoes || this.participantes.length === 0) {
+      return [];
+    }
+
+    const estatisticas = this.bolao.opcoes.map(opcao => {
+      const palpitesParaEstaOpcao = this.participantes.filter(p => p.palpite === opcao.descricao);
+      const quantidade = palpitesParaEstaOpcao.length;
+      const porcentagem = this.participantes.length > 0 
+        ? Math.round((quantidade / this.participantes.length) * 100) 
+        : 0;
+
+      return {
+        nome: opcao.descricao,
+        quantidade: quantidade,
+        porcentagem: porcentagem,
+        isVencedora: this.bolao?.opcaoId === opcao.id
+      };
+    });
+
+    // Ordenar por quantidade de palpites (decrescente)
+    return estatisticas.sort((a, b) => b.quantidade - a.quantidade);
   }
 }

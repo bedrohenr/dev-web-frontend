@@ -14,6 +14,7 @@ export interface Bolao {
   ativo: boolean;
   totalParticipantes?: number;
   opcoes?: string[];
+  palpiteUsuario?: string; // Palpite atual do usuário logado
 }
 
 @Component({
@@ -28,6 +29,10 @@ export class ListBolaoComponent implements OnInit {
   searchTerm = '';
   filtroVisibilidade = 'todos'; // 'todos', 'publicos', 'privados'
   filtroStatus = 'todos'; // 'todos', 'ativos', 'inativos'
+  
+  // Propriedades para o modal de palpite
+  bolaoSelecionado: Bolao | null = null;
+  opcaoEscolhida: string = '';
 
   constructor(
     private router: Router,
@@ -49,6 +54,10 @@ export class ListBolaoComponent implements OnInit {
         // Adaptar os dados da API para o formato esperado pelo componente
         this.boloes = this.adaptarDadosAPI(response.data || response);
         this.boloesFiltered = [...this.boloes];
+        
+        // Carregar palpites do usuário após carregar bolões
+        this.carregarPalpitesUsuario();
+        
         this.isLoading = false;
       },
       error: (error) => {
@@ -73,7 +82,8 @@ export class ListBolaoComponent implements OnInit {
       dataCriacao: item.createdAt ? new Date(item.createdAt) : new Date(),
       ativo: item.deletedAt ? false : true, // Baseado no soft delete
       totalParticipantes: item.participantes?.length || 0,
-      opcoes: item.opcoes?.map((opcao: any) => opcao.descricao) || []
+      opcoes: item.opcoes?.map((opcao: any) => opcao.descricao) || [],
+      palpiteUsuario: item.palpiteUsuario // Novo campo para rastrear o palpite do usuário
     }));
   }
 
@@ -90,7 +100,8 @@ export class ListBolaoComponent implements OnInit {
         dataCriacao: new Date('2025-01-10'),
         ativo: true,
         totalParticipantes: 15,
-        opcoes: ['Flamengo', 'Empate', 'Botafogo']
+        opcoes: ['Flamengo', 'Empate', 'Botafogo'],
+        palpiteUsuario: 'Flamengo' // Palpite mock do usuário
       },
       {
         id: 2,
@@ -102,7 +113,8 @@ export class ListBolaoComponent implements OnInit {
         dataCriacao: new Date('2025-01-08'),
         ativo: true,
         totalParticipantes: 50,
-        opcoes: ['Brasil', 'Argentina', 'França', 'Alemanha']
+        opcoes: ['Brasil', 'Argentina', 'França', 'Alemanha'],
+        palpiteUsuario: '' // Sem palpite definido
       },
       {
         id: 3,
@@ -114,11 +126,34 @@ export class ListBolaoComponent implements OnInit {
         dataCriacao: new Date('2025-01-05'),
         ativo: false,
         totalParticipantes: 8,
-        opcoes: ['Candidato A', 'Candidato B', 'Candidato C']
+        opcoes: ['Candidato A', 'Candidato B', 'Candidato C'],
+        palpiteUsuario: 'Candidato A' // Palpite mock do usuário
       }
     ];
     
     this.boloesFiltered = [...this.boloes];
+  }
+
+  private carregarPalpitesUsuario(): void {
+    // Carregar palpites do usuário para cada bolão
+    this.boloes.forEach(bolao => {
+      this.bolaoService.obterPalpiteUsuario(bolao.id).subscribe({
+        next: (response) => {
+          if (response.data && response.data.opcao) {
+            bolao.palpiteUsuario = response.data.opcao.descricao;
+            // Atualizar a lista filtrada
+            const filteredIndex = this.boloesFiltered.findIndex(b => b.id === bolao.id);
+            if (filteredIndex !== -1) {
+              this.boloesFiltered[filteredIndex].palpiteUsuario = response.data.opcao.descricao;
+            }
+          }
+        },
+        error: (error) => {
+          // Silenciosamente ignorar erros - usuário pode não ter palpitado ainda
+          console.log(`Usuário não palpitou no bolão ${bolao.id}`);
+        }
+      });
+    });
   }
 
   aplicarFiltros(): void {
@@ -226,5 +261,98 @@ export class ListBolaoComponent implements OnInit {
 
   getVisibilidadeClass(visibilidade: number): string {
     return visibilidade === 1 ? 'badge bg-warning' : 'badge bg-info';
+  }
+
+  palpitar(bolao: Bolao): void {
+    // Verificar se o bolão está ativo
+    if (!bolao.ativo) {
+      this.mensageriaService.mensagemAlerta('Este bolão está inativo e não aceita novos palpites.');
+      return;
+    }
+
+    // Verificar se há opções disponíveis
+    if (!bolao.opcoes || bolao.opcoes.length === 0) {
+      this.mensageriaService.mensagemAlerta('Este bolão não possui opções para palpitar.');
+      return;
+    }
+
+    // Abrir modal de palpite
+    this.bolaoSelecionado = bolao;
+    this.opcaoEscolhida = bolao.palpiteUsuario || ''; // Pré-selecionar palpite atual se existir
+    
+    // Abrir o modal usando Bootstrap
+    const modalElement = document.getElementById('palpiteModal');
+    if (modalElement) {
+      const modal = new (window as any).bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  confirmarPalpite(): void {
+    if (!this.bolaoSelecionado || !this.opcaoEscolhida) {
+      this.mensageriaService.mensagemErro('Por favor, selecione uma opção.');
+      return;
+    }
+
+    console.log('Confirmando palpite:', {
+      bolaoId: this.bolaoSelecionado.id,
+      opcaoEscolhida: this.opcaoEscolhida,
+      bolaoNome: this.bolaoSelecionado.nome
+    });
+
+    this.isLoading = true;
+
+    this.bolaoService.fazerPalpite(this.bolaoSelecionado.id, this.opcaoEscolhida).subscribe({
+      next: (response) => {
+        console.log('Palpite realizado com sucesso:', response);
+        this.isLoading = false;
+        this.mensageriaService.mensagemSucesso(`Palpite "${this.opcaoEscolhida}" realizado com sucesso!`);
+        
+        // Atualizar o palpite no bolão atual
+        if (this.bolaoSelecionado) {
+          this.bolaoSelecionado.palpiteUsuario = this.opcaoEscolhida;
+          
+          // Atualizar também na lista de bolões
+          const bolaoIndex = this.boloes.findIndex(b => b.id === this.bolaoSelecionado!.id);
+          if (bolaoIndex !== -1) {
+            this.boloes[bolaoIndex].palpiteUsuario = this.opcaoEscolhida;
+          }
+          
+          // Reaplicar filtros para atualizar a lista filtrada
+          this.aplicarFiltros();
+        }
+        
+        // Fechar o modal
+        const modalElement = document.getElementById('palpiteModal');
+        if (modalElement) {
+          const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
+          if (modal) {
+            modal.hide();
+          }
+        }
+        
+        // Limpar seleção
+        this.bolaoSelecionado = null;
+        this.opcaoEscolhida = '';
+      },
+      error: (error) => {
+        console.error('Erro ao fazer palpite:', error);
+        this.isLoading = false;
+        
+        let errorMessage = 'Erro ao realizar o palpite. Tente novamente.';
+        
+        if (error.status === 401) {
+          errorMessage = 'Você precisa estar logado para fazer palpites.';
+        } else if (error.status === 400) {
+          errorMessage = error.error?.error || 'Dados inválidos para o palpite.';
+        } else if (error.error?.error) {
+          errorMessage = error.error.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        this.mensageriaService.mensagemErro(errorMessage);
+      }
+    });
   }
 }
