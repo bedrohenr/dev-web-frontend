@@ -1,12 +1,24 @@
-<div class="container title-container">
+<!-- Loading Spinner -->
+<div class="container" *ngIf="isLoading">
+  <div class="row">
+    <div class="col-12 text-center text-white">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-2">Carregando dados do bolão...</p>
+    </div>
+  </div>
+</div>
+
+<div class="container title-container" *ngIf="!isLoading">
   <div class="row">
     <div class="col-12 text-white text-center ">
-      <span class="fs-3">Administrar bolão</span>
+      <span class="fs-2">Administrar bolão</span>
     </div>
   </div>
   <div class="row">
     <div class="col-12 text-white text-left ">
-      <span class="fs-3">Bolão: {{ model.nome }}</span>
+      <span class="fs-4">Bolão: {{ model.nome }}</span>
     </div>
     <div class="col-12 p-2 texto-cinza">
       <span class="fs-5">{{ model.descricao }}</span>
@@ -14,7 +26,7 @@
   </div>
 </div>
 
-<div class="container resultado-bolao">
+<div class="container resultado-bolao" *ngIf="!isLoading">
   <div class="row">
     <div class="col-12 background-claro">
       <div class="row">
@@ -23,27 +35,40 @@
         </div>
         <div class="form-group">
 
-          <div *ngFor="let opcao of opcoes; let i = index" class="form-group texto-escuro row p-2">
+          <div *ngFor="let opcao of this.model.opcoes; let i = index" class="form-group texto-escuro row p-2">
             <div class="col-10">
               <div class="col-12">
                 <label>Opção {{ i + 1 }}</label>
               </div>
               <div class="col-12">
-                <span class="fs-3">{{ opcao }}</span>
+                <span class="fs-3">{{ opcao.descricao }}</span>
               </div>
             </div>
             <div class="col-2 h-100">
-              <button type="button" class="btn btn-success btn-sm">Escolher</button>
+              <button type="button" class="btn btn-success btn-sm" (click)="escolherOpcao(opcao.id)">Escolher</button>
             </div>
           </div>
 
+        </div>
+        <div class="col-12 texto-escuro" *ngIf="isLoadingEscolha">
+          <!-- Loading Spinner -->
+          <div class="container" >
+            <div class="row">
+              <div class="col-12 text-center texto-escuro">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden texto-escuro">Carregando...</span>
+                </div>
+                <p class="mt-2 texto-escuro">Escolhendo opção ganhadora do bolão...</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container title-container">
+<div class="container title-container" *ngIf="!isLoading">
   <div class="row">
     <div class="col-12 p-2 text-white">
       <span class="fs-5">Palpite dos participantes</span>
