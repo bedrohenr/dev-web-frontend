@@ -1,3 +1,5 @@
+import { AuthInterceptor } from './../../core/handlers/http.handle-interceptor';
+import { AuthService } from './../../services/auth.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
@@ -17,7 +19,8 @@ export class LoginComponent {
   constructor (
     private route: ActivatedRoute,
     private router: Router,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private authService: AuthService
   ) {
     this.form = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -29,12 +32,12 @@ export class LoginComponent {
     if(this.form.invalid){
       alert("Formulário invalido...");
     } else {
-       const dadosUsuario = {
+       const dados = {
         email: this.form.value.email,
         senha: this.form.value.senha
       };
 
-       this.usuarioService.autenticacao(dadosUsuario).subscribe({
+       this.authService.login(dados).subscribe({
         next: (response) => {
           console.log('Usuário logado!', response);
           this.loginSucesso = true;
@@ -48,6 +51,7 @@ export class LoginComponent {
           this.loginErro = error.error.message || 'Ocorreu um erro no login. Tente novamente.';
 
           alert(this.loginErro);
+          this.form.markAllAsTouched();
         }
       });
     }

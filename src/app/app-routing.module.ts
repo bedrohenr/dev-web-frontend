@@ -6,6 +6,7 @@ import { CreateBolaoComponent } from './components/create-bolao/create-bolao.com
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -18,23 +19,26 @@ export const routes: Routes = [
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
+    path:'sign-up',
+    component: SignUpComponent,
+    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  {
     path:'create',
     component: CreateBolaoComponent,
+    canActivate: [AuthGuard]
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
     path:'update/:id',
     component: UpdateBolaoComponent,
+    canActivate: [AuthGuard]
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
   {
     path:'outcome/:id',
     component: OutcomeBolaoComponent,
-    // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
-  },
-  {
-    path:'sign-up',
-    component: SignUpComponent,
+    canActivate: [AuthGuard]
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
 ];
