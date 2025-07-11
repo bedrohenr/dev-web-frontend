@@ -67,36 +67,14 @@ export class CreateBolaoComponent {
       this.form.markAllAsTouched();
       return;
     } else {
-      const dados = {
-        nome: this.form.value.titulo,
-        descricao: this.form.value.descricao,
-        criadorId: this.usuarioService.getIdUsuarioLogado(), // Não tem autenticação ainda
-        opcoes: this.form.value.opcoes
-      };
-
-       this.bolaoService.criarBolao(dados).subscribe({
-        next: (response) => {
-          console.log('Bolão criado!', response);
-
-          // Retornar a pagina login após criado
-          alert(response.message);
-          // this.router.navigate(['login'])
-        },
-          error: (error) => {
-            console.error('Erro na criação de bolão:', error);
-            const criacaoErro = error.error.message || 'Ocorreu um erro no login. Tente novamente.';
-
-            alert(criacaoErro);
-          }
-        });
-    }
+      
 
     this.isLoading = true;
 
     const dados = {
       nome: this.form.value.titulo,
       descricao: this.form.value.descricao,
-      criadorId: 1,
+      criadorId: this.usuarioService.getIdUsuarioLogado(),
       opcoes: this.form.value.opcoes
     };
 
@@ -115,6 +93,7 @@ export class CreateBolaoComponent {
           this.mensageriaService.mensagemErro(criacaoErro);
         }
       });
+    }
   }
 
   hasFieldError(fieldName: string): boolean {

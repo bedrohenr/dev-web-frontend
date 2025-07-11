@@ -8,3 +8,40 @@
 .texto-ganhador {
   color: limegreen;
 }
+
+/* Estilo para destacar a opção vencedora */
+.opcao-vencedora {
+  background-color: rgba(40, 167, 69, 0.2);
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* Spinner personalizado */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Card personalizado */
+.card-body {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .resultado-bolao {
+    padding: 20px;
+  }
+}
+
+/* Animação para destaque do ganhador */
+.table-success {
+  animation: highlight 2s ease-in-out;
+}
+
+@keyframes highlight {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(40, 167, 69, 0.3); }
+  100% { background-color: rgba(40, 167, 69, 0.1); }
+}

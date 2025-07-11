@@ -1,24 +1,86 @@
-<div class="container title-container">
+<div class="container title-container" *ngIf="bolao">
   <div class="row">
-    <div class="col-12 text-white text-left ">
-      <span class="fs-3">Flamengo x Botafogo</span>
+    <div class="col-12 text-white text-left">
+      <span class="fs-3">{{ bolao.nome }}</span>
     </div>
     <div class="col-12 p-2 texto-cinza">
-      <span class="fs-5">Bolão criado para o jogo de hoje</span>
+      <span class="fs-5">{{ bolao.descricao }}</span>
+    </div>
+    <!-- Informações adicionais do bolão -->
+    <div class="col-12 mt-3">
+      <div class="row">
+        <div class="col-md-6">
+          <small class="text-white">
+            <i class="fas fa-user me-1"></i>
+            Criado por: <span class="text-white">{{ getCriadorInfo() }}</span>
+          </small>
+        </div>
+        <div class="col-md-6">
+          <small class="text-white" *ngIf="bolao.createdAt">
+            <i class="fas fa-calendar me-1"></i>
+            Em: <span class="text-white">{{ formatarDataCriacao() }}</span>
+          </small>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <small class="text-white">
+            <i class="fas fa-list me-1"></i>
+            Opções: <span class="text-white">{{ getTotalOpcoes() }}</span>
+          </small>
+        </div>
+        <div class="col-md-6">
+          <small class="text-white">
+            <i class="fas fa-users me-1"></i>
+            Participantes: <span class="text-white">{{ getTotalParticipantes() }}</span>
+          </small>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="container resultado-bolao">
+<!-- Loading Spinner -->
+<div class="container" *ngIf="isLoading">
+  <div class="row">
+    <div class="col-12 text-center text-white">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-2">Carregando dados do bolão...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Resultado do Bolão -->
+<div class="container resultado-bolao" *ngIf="!isLoading && bolao">
   <div class="row">
     <div class="col-12 background-claro">
       <div class="row">
         <div class="col-12 form-group text-center pb-2">
-          <span class="fs-4 texto-escuro">Ganhador do bolão:</span>
+          <span class="fs-4 texto-escuro">
+            {{ temGanhador() ? 'Resultado do bolão:' : 'Bolão ainda não finalizado' }}
+          </span>
         </div>
-        <div class="row form-group">
+        <div class="row form-group" *ngIf="temGanhador()">
           <div class="col-12 form-group texto-escuro text-center">
-            <span class="fs-2 fw-bold">THIAGO</span>
+            <span class="fs-5 fw-bold">Opção vencedora:</span>
+            <br>
+            <span class="fs-2 fw-bold text-success">{{ getOpcaoVencedora() }}</span>
+          </div>
+          <div class="col-12 form-group texto-escuro text-center mt-3" *ngIf="ganhadores.length > 0">
+            <span class="fs-5 fw-bold">Ganhador(es):</span>
+            <br>
+            <span class="fs-3 fw-bold text-primary" *ngFor="let ganhador of ganhadores; let last = last">
+              {{ ganhador }}<span *ngIf="!last">, </span>
+            </span>
+          </div>
+        </div>
+        <div class="row form-group" *ngIf="!temGanhador()">
+          <div class="col-12 form-group texto-escuro text-center">
+            <span class="fs-3 fw-bold text-warning">Aguardando resultado</span>
+            <br>
+            <small class="text-muted">O criador do bolão ainda não definiu a opção vencedora</small>
           </div>
         </div>
       </div>
@@ -26,40 +88,106 @@
   </div>
 </div>
 
-<div class="container title-container">
+<!-- Palpites dos Participantes -->
+<div class="container title-container" *ngIf="!isLoading && bolao">
   <div class="row">
     <div class="col-12 p-2 text-white">
-      <span class="fs-5">Palpite dos participantes</span>
+      <span class="fs-5">Informações do Bolão</span>
     </div>
   </div>
-  <div class="row">
+  
+  <!-- Mostrar opções disponíveis -->
+  <div class="row" *ngIf="bolao.opcoes && bolao.opcoes.length > 0">
     <div class="col-12">
+      <div class="card bg-dark text-white mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Opções Disponíveis</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 col-lg-4 mb-2" *ngFor="let opcao of bolao.opcoes">
+              <div class="d-flex align-items-center">
+                <span class="badge me-2" 
+                      [class]="bolao.opcaoId === opcao.id ? 'bg-success' : 'bg-secondary'">
+                  {{ opcao.id }}
+                </span>
+                <span [class]="bolao.opcaoId === opcao.id ? 'fw-bold text-success' : ''">
+                  {{ opcao.descricao }}
+                </span>
+                <i class="fas fa-crown text-warning ms-2" *ngIf="bolao.opcaoId === opcao.id"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de participantes (se houver apostas) -->
+  <div class="row" *ngIf="participantes.length > 0">
+    <div class="col-12">
+      <h6 class="text-white mb-3">Palpites dos Participantes</h6>
       <table class="table table-dark">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Participante</th>
             <th scope="col">Palpite</th>
+            <th scope="col" *ngIf="temGanhador()">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th class="texto-ganhador" scope="row">1</th>
-            <td class="texto-ganhador">Thiago</td>
-            <td class="texto-ganhador">Flamengo 2 x 0 Botafogo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>João</td>
-            <td>Flamengo 0 x 0 Botafogo</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Maria</td>
-            <td>Flamengo 0 x 1 Botafogo</td>
+          <tr *ngFor="let participante of participantes" 
+              [class]="participante.isGanhador ? 'table-success' : ''">
+            <th scope="row" 
+                [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+              {{ participante.posicao }}
+            </th>
+            <td [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+              {{ participante.nome }}
+              <i class="fas fa-crown text-warning ms-2" *ngIf="participante.isGanhador"></i>
+            </td>
+            <td [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+              {{ participante.palpite }}
+            </td>
+            <td *ngIf="temGanhador()" 
+                [class]="participante.isGanhador ? 'texto-ganhador fw-bold' : ''">
+              <span class="badge" 
+                    [class]="participante.isGanhador ? 'bg-success' : 'bg-secondary'">
+                {{ participante.isGanhador ? 'GANHOU' : 'Perdeu' }}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Mensagem quando não há participantes -->
+<div class="container" *ngIf="!isLoading && bolao && participantes.length === 0">
+  <div class="row">
+    <div class="col-12 text-center text-white">
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        Este bolão ainda não possui apostas registradas ou os dados de apostas não estão disponíveis na API atual.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Botões de Ação -->
+<div class="container mt-4" *ngIf="!isLoading">
+  <div class="row">
+    <div class="col-12 text-center">
+      <button type="button" class="btn btn-secondary me-2" (click)="voltarParaLista()">
+        <i class="fas fa-arrow-left me-2"></i>
+        Voltar para Lista
+      </button>
+      <button type="button" class="btn btn-primary" (click)="carregarBolaoDetalhado()">
+        <i class="fas fa-sync-alt me-2"></i>
+        Atualizar
+      </button>
     </div>
   </div>
 </div>
