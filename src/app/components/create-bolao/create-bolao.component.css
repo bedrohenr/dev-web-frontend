@@ -24,3 +24,37 @@
   height: 50%;
   align-items: end;
 }
+
+/* Estilos para validações */
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+/* Estilo para campos obrigatórios */
+label .text-danger {
+  font-weight: bold;
+}
+
+/* Estilo para botões desabilitados durante loading */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spinner personalizado */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}

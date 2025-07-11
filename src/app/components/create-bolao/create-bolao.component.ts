@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BolaoService } from 'src/app/services/bolao.service';
+import { MensageriaService } from './../../core/mensageria/mensageria.service';
 
 @Component({
   selector: 'app-create-bolao',
@@ -10,11 +11,13 @@ import { BolaoService } from 'src/app/services/bolao.service';
 })
 export class CreateBolaoComponent {
   form: FormGroup;
+  isLoading = false;
 
   constructor (
     private route: ActivatedRoute,
     private router: Router,
-    private bolaoService: BolaoService
+    private bolaoService: BolaoService,
+    private mensageriaService: MensageriaService
   ) {
     this.form = new FormGroup({
       titulo: new FormControl('', [Validators.required]),
@@ -31,25 +34,23 @@ export class CreateBolaoComponent {
     return new FormControl('', [Validators.required]);
   }
 
-  // Método para adicionar uma nova opção ao FormArray
   addOpcao(): void {
     this.opcoesArray.push(this.createOpcaoControl());
   }
 
   get opcoesArray(): FormArray {
-    // É importante fazer o 'as FormArray' para que o TypeScript saiba o tipo correto
     return this.form.get('opcoes') as FormArray;
   }
 
   removeOpcao(index: number): void {
-    if (this.opcoesArray.length > 2) { // Garante que pelo menos uma opção permaneça
+    if (this.opcoesArray.length > 2) { 
       this.opcoesArray.removeAt(index);
     } else {
-      alert('É necessário ter pelo menos duas opções!');
+      this.mensageriaService.mensagemErro('É necessário ter pelo menos duas opções!');
     }
   }
 
-  // Quantidade minima de opcoes
+
   minOptionsValidator(min: number): ValidatorFn {
     return (formArray: AbstractControl): { [key: string]: any } | null => {
       if (formArray instanceof FormArray && formArray.controls.length < min) {
@@ -61,32 +62,59 @@ export class CreateBolaoComponent {
 
   onSubmit(){
     if(this.form.invalid){
-      alert("Formulário invalido...");
-      console.log(this.form);
-    } else {
-      const dados = {
-        nome: this.form.value.titulo,
-        descricao: this.form.value.descricao,
-        criadorId: 1, // Não tem autenticação ainda
-        opcoes: this.form.value.opcoes
-      };
-
-       this.bolaoService.criarBolao(dados).subscribe({
-        next: (response) => {
-          console.log('Bolão criado!', response);
-
-          // Retornar a pagina login após criado
-          alert(response.message);
-          // this.router.navigate(['login'])
-        },
-          error: (error) => {
-            console.error('Erro na tentativa de login:', error);
-            const criacaoErro = error.error.message || 'Ocorreu um erro no login. Tente novamente.';
-
-            alert(criacaoErro);
-          }
-        });
+      this.form.markAllAsTouched(); 
+      return;
     }
+
+    this.isLoading = true;
+    
+    const dados = {
+      nome: this.form.value.titulo,
+      descricao: this.form.value.descricao,
+      criadorId: 1, 
+      opcoes: this.form.value.opcoes
+    };
+
+     this.bolaoService.criarBolao(dados).subscribe({
+      next: (response) => {
+        console.log('Bolão criado!', response);
+        this.isLoading = false;
+
+        this.mensageriaService.mensagemSucesso(response.message);
+      },
+        error: (error) => {
+          console.error('Erro na tentativa de criação:', error);
+          this.isLoading = false;
+          const criacaoErro = error.error.message || 'Ocorreu um erro ao criar o bolão. Tente novamente.';
+
+          this.mensageriaService.mensagemErro(criacaoErro);
+        }
+      });
+  }
+
+  hasFieldError(fieldName: string): boolean {
+    const field = this.form.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  getFieldErrorMessage(fieldName: string): string {
+    const field = this.form.get(fieldName);
+    if (field && field.errors) {
+      if (field.errors['required']) {
+        return 'Este campo é obrigatório.';
+      }
+    }
+    return '';
+  }
+
+
+  hasOptionsArrayError(): boolean {
+    return this.opcoesArray.invalid && (this.opcoesArray.dirty || this.opcoesArray.touched);
+  }
+
+  hasOptionError(index: number): boolean {
+    const control = this.opcoesArray.at(index);
+    return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
 }
