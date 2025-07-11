@@ -6,6 +6,7 @@ import { CreateBolaoComponent } from './components/create-bolao/create-bolao.com
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ListBolaoComponent } from './components/list-bolao/list-bolao.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -22,6 +23,11 @@ export const routes: Routes = [
     path:'sign-up',
     component: SignUpComponent,
     // loadChildren: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path:'boloes',
+    component: ListBolaoComponent,
+    canActivate: [AuthGuard]
   },
   {
     path:'create',

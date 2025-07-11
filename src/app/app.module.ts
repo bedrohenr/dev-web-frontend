@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ListBolaoComponent } from './components/list-bolao/list-bolao.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
     UpdateBolaoComponent,
     OutcomeBolaoComponent,
     SignUpComponent,
+    ListBolaoComponent,
   ],
   imports: [
     BrowserModule,

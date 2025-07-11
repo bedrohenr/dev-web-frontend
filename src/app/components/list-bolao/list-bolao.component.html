@@ -1,0 +1,223 @@
+<div class="container title-container">
+  <div class="row py-4">
+    <div class="col-8 text-white text-left">
+      <span class="fs-3">Lista de Bolões</span>
+    </div>
+    <div class="col-4 text-end">
+      <button class="btn btn-outline-light mx-1" (click)="recarregarDados()" [disabled]="isLoading" title="Recarregar dados">
+        <i class="las la-sync-alt"></i>
+      </button>
+      <button class="btn btn-success mx-2" (click)="criarNovoBolao()" [disabled]="isLoading">
+        <i class="las la-plus"></i> Criar Novo Bolão
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container filters-container">
+  <div class="row">
+    <div class="col-12 background-claro p-3 rounded">
+      <div class="row align-items-end">
+        <!-- Campo de busca -->
+        <div class="col-md-4">
+          <label for="searchInput" class="form-label texto-escuro">
+            <i class="las la-search"></i> Buscar bolões
+          </label>
+          <input 
+            type="text" 
+            id="searchInput"
+            class="form-control" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearchChange()"
+            placeholder="Nome, descrição ou criador..."
+            [disabled]="isLoading">
+        </div>
+
+        <!-- Filtro por visibilidade -->
+        <div class="col-md-3">
+          <label for="filtroVisibilidade" class="form-label texto-escuro">
+            <i class="las la-eye"></i> Visibilidade
+          </label>
+          <select 
+            id="filtroVisibilidade"
+            class="form-select" 
+            [(ngModel)]="filtroVisibilidade" 
+            (change)="onFiltroVisibilidadeChange()"
+            [disabled]="isLoading">
+            <option value="todos">Todos</option>
+            <option value="publicos">Públicos</option>
+            <option value="privados">Privados</option>
+          </select>
+        </div>
+
+        <!-- Filtro por status -->
+        <div class="col-md-3">
+          <label for="filtroStatus" class="form-label texto-escuro">
+            <i class="las la-toggle-on"></i> Status
+          </label>
+          <select 
+            id="filtroStatus"
+            class="form-select" 
+            [(ngModel)]="filtroStatus" 
+            (change)="onFiltroStatusChange()"
+            [disabled]="isLoading">
+            <option value="todos">Todos</option>
+            <option value="ativos">Ativos</option>
+            <option value="inativos">Inativos</option>
+          </select>
+        </div>
+
+        <!-- Botão limpar filtros -->
+        <div class="col-md-2">
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary w-100" 
+            (click)="limparFiltros()"
+            [disabled]="isLoading">
+            <i class="las la-broom"></i> Limpar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div *ngIf="isLoading" class="container my-4">
+  <div class="row">
+    <div class="col-12 text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-2 text-white">Carregando bolões...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Lista de Bolões -->
+<div class="container boloes-container" *ngIf="!isLoading">
+  <!-- Informações dos resultados -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <p class="text-white mb-0">
+        <i class="las la-info-circle"></i>
+        Exibindo {{ boloesFiltered.length }} de {{ boloes.length }} bolões
+      </p>
+    </div>
+  </div>
+
+  <!-- Cards dos bolões -->
+  <div class="row" *ngIf="boloesFiltered.length > 0; else noBoloes">
+    <div class="col-lg-6 col-xl-4 mb-4" *ngFor="let bolao of boloesFiltered">
+      <div class="card bolao-card h-100">
+        <div class="card-header d-flex justify-content-between align-items-start">
+          <div>
+            <h5 class="card-title mb-1">{{ bolao.nome }}</h5>
+            <div class="badges">
+              <span [class]="getVisibilidadeClass(bolao.visibilidade)">
+                {{ getVisibilidadeTexto(bolao.visibilidade) }}
+              </span>
+              <span [class]="getStatusClass(bolao.ativo)" class="ms-1">
+                {{ getStatusTexto(bolao.ativo) }}
+              </span>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="las la-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="#" (click)="visualizarBolao(bolao); $event.preventDefault()">
+                  <i class="las la-trophy"></i> Ver Resultado
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" (click)="editarBolao(bolao); $event.preventDefault()">
+                  <i class="las la-edit"></i> Editar
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" href="#" (click)="excluirBolao(bolao); $event.preventDefault()">
+                  <i class="las la-trash"></i> Excluir
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text text-muted">{{ bolao.descricao }}</p>
+          
+          <div class="bolao-info">
+            <div class="info-item">
+              <i class="las la-user"></i>
+              <span>Criador: {{ bolao.criadorNome }}</span>
+            </div>
+            <div class="info-item">
+              <i class="las la-users"></i>
+              <span>{{ bolao.totalParticipantes }} participantes</span>
+            </div>
+            <div class="info-item">
+              <i class="las la-calendar"></i>
+              <span>Criado em: {{ bolao.dataCriacao | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+
+          <!-- Opções do bolão -->
+          <div class="opcoes-preview mt-3">
+            <h6 class="opcoes-title">Opções:</h6>
+            <div class="opcoes-list">
+              <span class="opcao-badge" *ngFor="let opcao of bolao.opcoes?.slice(0, 3)">
+                {{ opcao }}
+              </span>
+              <span class="opcao-badge opcao-more" *ngIf="bolao.opcoes && bolao.opcoes.length > 3">
+                +{{ bolao.opcoes.length - 3 }} mais
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-6">
+              <button class="btn btn-primary btn-sm w-100" (click)="visualizarBolao(bolao)">
+                <i class="las la-trophy"></i> Ver Resultado
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-outline-primary btn-sm w-100" (click)="editarBolao(bolao)">
+                <i class="las la-edit"></i> Editar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado vazio -->
+  <ng-template #noBoloes>
+    <div class="row">
+      <div class="col-12">
+        <div class="empty-state text-center py-5">
+          <i class="las la-inbox empty-icon"></i>
+          <h4 class="text-white mt-3">Nenhum bolão encontrado</h4>
+          <p class="text-muted">
+            {{ searchTerm || filtroVisibilidade !== 'todos' || filtroStatus !== 'todos' 
+               ? 'Tente ajustar os filtros de busca' 
+               : 'Ainda não há bolões criados' }}
+          </p>
+          <button class="btn btn-success mt-3" (click)="criarNovoBolao()" *ngIf="!searchTerm && filtroVisibilidade === 'todos' && filtroStatus === 'todos'">
+            <i class="las la-plus"></i> Criar Primeiro Bolão
+          </button>
+          <button class="btn btn-outline-light mt-3" (click)="limparFiltros()" *ngIf="searchTerm || filtroVisibilidade !== 'todos' || filtroStatus !== 'todos'">
+            <i class="las la-broom"></i> Limpar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
