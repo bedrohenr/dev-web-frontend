@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BolaoService } from 'src/app/services/bolao.service';
 
 @Component({
@@ -8,9 +8,11 @@ import { BolaoService } from 'src/app/services/bolao.service';
   styleUrls: ['./update-bolao.component.css']
 })
 export class UpdateBolaoComponent {
+  isLoading = true;
+  isLoadingEscolha = false;
   idBolao: number = 0;
   model: any = null;
-  opcoes = ['VASCO DA GAMA 1', 'VASCO DA GAMA 2', 'VASCO DA GAMA 3'];
+  opcoes = [{}];
   palpites = [
     { "user": "Pedro", "opcao": 1},
     { "user": "Thiago", "opcao": 2},
@@ -19,20 +21,49 @@ export class UpdateBolaoComponent {
   ]
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private bolaoService: BolaoService
   ) { }
 
   ngOnInit(): void {
     this.idBolao = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.bolaoService.getBolaoById(this.idBolao).subscribe({
-        next: (response) => {
-          console.log('Bolão carregado!', response);
-          this.model = response;
-        },
-          error: (error) => {
-            console.error('Erro ao carregar bolão:', error);
-          }
-        });
-  }
+    this.bolaoService.obterBolao(this.idBolao).subscribe({
+      next: (response) => {
+        console.log('Bolão carregado!', response);
+        this.isLoading = false;
+        if(response.opcaoId !== null){
+          alert("Este bolão ja foi finalizado.");
+          this.router.navigate([`/outcome/${this.idBolao}`]);
+        }
+        this.model = response;
+
+      },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Erro ao carregar bolão:', error);
+        }
+      });
+    }
+
+  escolherOpcao(id: number){
+    this.isLoadingEscolha = true;
+    const dados = {
+      "idOpcaoGanhador": id
+    }
+    this.bolaoService.escolherOpcao(this.idBolao, dados).subscribe({
+      next: (response) => {
+        console.log('Opção escolhida!', response);
+        this.isLoading = false;
+        alert("Opção escolhida com sucesso");
+        this.router.navigate([`outcome/${this.idBolao}`]);
+      },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Erro ao escolher opção:', error);
+          alert("Erro ao escolher opção");
+        }
+      });
+    }
+
 }
