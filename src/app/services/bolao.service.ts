@@ -39,4 +39,10 @@ export class BolaoService {
     const url = `${this.apiUrl}${apiExcluirEndpoint}`;
     return this.http.delete<any>(url);
   }
+
+  getBolaoById(id: number): Observable<any>{
+    const apiGetBolaoEndpoint = `/get-one-grupo`;
+    const url = `${this.apiUrl}${apiGetBolaoEndpoint}/${id}`;
+    return this.http.get<any>(url);
+  }
 }
