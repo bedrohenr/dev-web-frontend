@@ -80,7 +80,7 @@
           <div class="col-12 form-group texto-escuro text-center">
             <span class="fs-3 fw-bold text-warning">Aguardando resultado</span>
             <br>
-            <small class="text-muted">O criador do bolão ainda não definiu a opção vencedora</small>
+            <small class="text-white">O criador do bolão ainda não definiu a opção vencedora</small>
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@
                       {{ opcao.quantidade }} {{ opcao.quantidade === 1 ? 'palpite' : 'palpites' }}
                     </span>
                   </p>
-                  <small class="text-muted">{{ opcao.porcentagem }}% dos palpites</small>
+                  <small class="text-white">{{ opcao.porcentagem }}% dos palpites</small>
                 </div>
                 <div>
                   <i class="las la-crown text-warning fs-3" *ngIf="opcao.isVencedora"></i>
@@ -218,7 +218,7 @@
                   {{ participante.palpite }}
                 </span>
               </td>
-              <td class="text-muted">
+              <td class="text-white">
                 <small>{{ formatarDataPalpite(participante.dataPalpite) }}</small>
               </td>
               <td *ngIf="temGanhador()" class="text-center"
@@ -260,7 +260,7 @@
                 </div>
                 
                 <div class="mb-2" *ngIf="participante.dataPalpite">
-                  <small class="text-muted">
+                  <small class="text-white">
                     <i class="las la-clock me-1"></i>
                     {{ formatarDataPalpite(participante.dataPalpite) }}
                   </small>
