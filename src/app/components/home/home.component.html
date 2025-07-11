@@ -1,3 +1,52 @@
-<div class="login">
-  <app-login></app-login>
+<div class="home-container" *ngIf="isLoggedIn; else loginSection">
+  <div class="welcome-section">
+    <div class="welcome-card">
+      <div class="welcome-header">
+        <i class="las la-trophy welcome-icon"></i>
+        <h1 class="welcome-title">Bem-vindo, {{ user }}!</h1>
+      </div>
+      <div class="welcome-body">
+        <p class="welcome-message">
+          Seja bem-vindo ao sistema de Bolões! 
+          Selecione uma opção na barra de navegação para continuar.
+        </p>
+        <div class="navigation-hints">
+          <div class="hint-item">
+            <i class="las la-home"></i>
+            <span>Use o menu acima para navegar</span>
+          </div>
+          <div class="hint-item">
+            <i class="las la-futbol"></i>
+            <span>Crie ou participe de bolões</span>
+          </div>
+          <div class="hint-item">
+            <i class="las la-users"></i>
+            <span>Gerencie seu perfil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="quick-actions">
+    <h3 class="actions-title">Ações Rápidas</h3>
+    <div class="actions-grid">
+      <div class="action-card" routerLink="/">
+        <i class="las la-list"></i>
+        <h4>Meus Bolões</h4>
+        <p>Visualizar bolões que você participa</p>
+      </div>
+      <div class="action-card" routerLink="/create">
+        <i class="las la-plus-circle"></i>
+        <h4>Criar Bolão</h4>
+        <p>Criar um novo bolão para seus amigos</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<ng-template #loginSection>
+  <div class="login">
+    <app-login></app-login>
+  </div>
+</ng-template>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +10,20 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
 
+  user: string | null = null;
+  isLoggedIn: boolean = false;
+
   constructor(
-    private router: Router
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private authService: AuthService
   ){}
 
-
   ngOnInit(): void {
-    // TODO: Se logado, mostrar Perfil? Meus bolões?
-    //     : Não logado, mostrar login
+    this.isLoggedIn = this.authService.isAuthenticated();
+    if (this.isLoggedIn) {
+      this.user = this.usuarioService.getNomeUsuarioLogado();
+    }
   }
 
   irParaClientes(){

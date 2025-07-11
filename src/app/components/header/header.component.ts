@@ -1,5 +1,7 @@
 import { UsuarioService } from './../../services/usuario.service';
+import { AuthService } from './../../services/auth.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +15,9 @@ export class HeaderComponent {
   isLogado: boolean = false;
 
   constructor (
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private authService: AuthService,
+    private router: Router
   ){
     if(this.usuarioService.getIdUsuarioLogado() !== null){
       this.user = this.usuarioService.getNomeUsuarioLogado();
@@ -21,6 +25,12 @@ export class HeaderComponent {
     }
   }
 
-
+  logout() {
+    // Usar o método logout do AuthService que já limpa o localStorage e redireciona
+    this.authService.logout();
+    this.user = null;
+    this.email = null;
+    this.isLogado = false;
+  }
 
 }

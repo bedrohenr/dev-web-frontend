@@ -48,6 +48,9 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_data');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_email');
     this._isLoggedIn.next(false); // Atualiza o estado de login
     this.router.navigate(['/login']); // Redireciona para a tela de login
   }

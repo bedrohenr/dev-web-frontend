@@ -1,5 +1,40 @@
 <header>
-  <nav class="navbar main-header">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="user !== null">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img  src="../../../assets/images/logo-times/polvo_bolao.png" alt="Logo" width="60" height="48" class="d-inline-block align-text-top me-2">
+        Bolão
+      </a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Bolões
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" routerLink="/" routerLinkActive="active">Meus Bolões</a></li>
+              <li><a class="dropdown-item" routerLink="/create" routerLinkActive="active">Criar</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="dropdown" *ngIf="user !== null">
+          <button class="btn btn-link text-white text-decoration-none d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="las la-user-circle fs-4 me-2"></i>
+            <span>{{ user }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#"><i class="las la-user me-2"></i>Perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" (click)="logout()"><i class="las la-sign-out-alt me-2"></i>Sair</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- <nav class="navbar main-header">
     <div class="container row">
       <div class="header-item col-8">
         <a class="navbar-brand fs-1 text-white text-left" href="#">Bolão</a>
@@ -26,5 +61,5 @@
         <a class="navbar-brand fs-6 text-white text-center" href="#">Entrar</a>
       </div>
     </div>
-  </nav>
+  </nav> -->
 </header>
