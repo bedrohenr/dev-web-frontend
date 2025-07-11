@@ -1,10 +1,15 @@
 <div class="container title-container">
   <div class="row">
-    <div class="col-12 text-white text-left ">
+    <div class="col-12 text-white text-center ">
       <span class="fs-3">Administrar bolão</span>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-white text-left ">
+      <span class="fs-3">Bolão: {{ model.nome }}</span>
+    </div>
     <div class="col-12 p-2 texto-cinza">
-      <span class="fs-5">Bolão criado para o jogo de hoje</span>
+      <span class="fs-5">{{ model.descricao }}</span>
     </div>
   </div>
 </div>
@@ -14,17 +19,24 @@
     <div class="col-12 background-claro">
       <div class="row">
         <div class="col-12 form-group text-center pb-2">
-          <span class="fs-4 texto-escuro">Bolão finalizado, insira o resultado</span>
+          <span class="fs-4 texto-escuro">Escolha o resultado do Bolão</span>
         </div>
-        <div class="row form-group">
-          <div class="col-6 form-group time-form-group texto-escuro">
-            <label for="inputTimeCasa">Flamengo</label>
-            <input type="text" class="form-control" id="inputTimeCasa">
+        <div class="form-group">
+
+          <div *ngFor="let opcao of opcoes; let i = index" class="form-group texto-escuro row p-2">
+            <div class="col-10">
+              <div class="col-12">
+                <label>Opção {{ i + 1 }}</label>
+              </div>
+              <div class="col-12">
+                <span class="fs-3">{{ opcao }}</span>
+              </div>
+            </div>
+            <div class="col-2 h-100">
+              <button type="button" class="btn btn-success btn-sm">Escolher</button>
+            </div>
           </div>
-          <div class="col-6 form-group time-form-group texto-escuro">
-            <label for="inputTimeVisitante">Botafogo</label>
-            <input type="text" class="form-control" id="inputTimeVisitante">
-          </div>
+
         </div>
       </div>
     </div>
@@ -45,27 +57,13 @@
             <th scope="col">#</th>
             <th scope="col">Participante</th>
             <th scope="col">Palpite</th>
-            <th  class="text-center" scope="col text-center">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Thiago</td>
-            <td>Flamengo 2 x 0 Botafogo</td>
-            <td class="text-center"><i class="las la-trash fs-3"></i></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>João</td>
-            <td>Flamengo 0 x 0 Botafogo</td>
-            <td class="text-center"><i class="las la-trash fs-3"></i></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Maria</td>
-            <td>Flamengo 0 x 1 Botafogo</td>
-            <td class="text-center"><i class="las la-trash fs-3"></i></td>
+          <tr *ngFor="let palpite of palpites; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ palpite.user }}</td>
+            <td>{{ opcoes[palpite.opcao] }}</td>
           </tr>
         </tbody>
       </table>
