@@ -23,7 +23,6 @@ export class CreateBolaoComponent {
   ) {
     this.form = new FormGroup({
       titulo: new FormControl('', [Validators.required]),
-      visibilidade: new FormControl('1', [Validators.required]),
       descricao: new FormControl('', [Validators.required]),
       opcoes: new FormArray([
         new FormControl('', [Validators.required]),
@@ -67,7 +66,7 @@ export class CreateBolaoComponent {
       this.form.markAllAsTouched();
       return;
     } else {
-      
+
 
     this.isLoading = true;
 

@@ -16,59 +16,26 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row">
 
-      <div class="col-8 form-group titulo-form-group texto-escuro">
+      <div class="col-12 form-group titulo-form-group texto-escuro">
         <label for="inputTitulo">Titulo <span class="text-danger">*</span></label>
-        <input type="text" 
-               formControlName="titulo" 
-               class="form-control" 
+        <input type="text"
+               formControlName="titulo"
+               class="form-control"
                [class.is-invalid]="hasFieldError('titulo')"
-               id="inputTitulo" 
+               id="inputTitulo"
                placeholder="Titulo do bolão">
         <div *ngIf="hasFieldError('titulo')" class="invalid-feedback">
           {{ getFieldErrorMessage('titulo') }}
         </div>
       </div>
 
-      <div class="col-4 form-group titulo-form-group texto-escuro">
-        <label for="flexVisibilidadeBolao">Visibilidade do Bolão <span class="text-danger">*</span></label>
-        <div class="row input-visibilidade">
-          <div class="col-6">
-            <div class="form-check">
-              <input class="form-check-input" 
-                     formControlName="visibilidade" 
-                     type="radio" 
-                     id="visibilidadeBolaoPriv" 
-                     value="1">
-              <label class="form-check-label" for="visibilidadeBolaoPriv">
-                Privado
-              </label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="form-check">
-              <input class="form-check-input" 
-                     formControlName="visibilidade" 
-                     type="radio" 
-                     id="visibilidadeBolaoPub" 
-                     value="2">
-              <label class="form-check-label" for="visibilidadeBolaoPub" >
-                Público
-              </label>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="hasFieldError('visibilidade')" class="text-danger small mt-1">
-          {{ getFieldErrorMessage('visibilidade') }}
-        </div>
-      </div>
-
       <div class="col-12 form-group descricao-form-group texto-escuro">
         <label for="inputDescricao">Descricao <span class="text-danger">*</span></label>
-        <input type="text" 
-               formControlName="descricao" 
-               class="form-control" 
+        <input type="text"
+               formControlName="descricao"
+               class="form-control"
                [class.is-invalid]="hasFieldError('descricao')"
-               id="inputDescricao" 
+               id="inputDescricao"
                placeholder="Descrição do bolão">
         <div *ngIf="hasFieldError('descricao')" class="invalid-feedback">
           {{ getFieldErrorMessage('descricao') }}
@@ -81,20 +48,20 @@
           <div *ngFor="let opcaoControl of opcoesArray.controls; let i = index" class="form-group texto-escuro d-flex align-items-center row">
             <div class="col-10">
               <label [for]="'opcao-' + i">Opção {{ i + 1 }} <span class="text-danger">*</span></label>
-              <input [formControlName]="i" 
-                     [id]="'opcao-' + i" 
-                     type="text" 
-                     class="form-control" 
+              <input [formControlName]="i"
+                     [id]="'opcao-' + i"
+                     type="text"
+                     class="form-control"
                      [class.is-invalid]="hasOptionError(i)"
-                     placeholder="Descrição da opção {{i + 1}}" 
+                     placeholder="Descrição da opção {{i + 1}}"
                      required>
               <div *ngIf="hasOptionError(i)" class="invalid-feedback">
                 Esta opção é obrigatória.
               </div>
             </div>
             <div class="col-2 align-items-end h-100">
-              <button type="button" 
-                      class="btn btn-danger btn-sm" 
+              <button type="button"
+                      class="btn btn-danger btn-sm"
                       (click)="removeOpcao(i)"
                       [disabled]="isLoading">
                 Remover
@@ -106,8 +73,8 @@
           </div>
         </div>
         <div class="col-12 text-center">
-          <button type="button" 
-                  class="btn btn-success btn-sm mt-2" 
+          <button type="button"
+                  class="btn btn-success btn-sm mt-2"
                   (click)="addOpcao()"
                   [disabled]="isLoading">
             + Adicionar Opção
