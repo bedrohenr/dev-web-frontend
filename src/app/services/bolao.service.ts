@@ -53,11 +53,11 @@ export class BolaoService {
     const palpiteData = {
       opcaoEscolhida: opcaoEscolhida
     };
-    
+
     console.log('Enviando palpite para:', url);
     console.log('Dados do palpite:', palpiteData);
     console.log('ID do bolão:', bolaoId);
-    
+
     return this.http.post<any>(url, palpiteData);
   }
 
@@ -73,5 +73,11 @@ export class BolaoService {
     const apiPalpitesEndpoint = `/palpites/${bolaoId}`;
     const url = `${this.apiUrl}${apiPalpitesEndpoint}`;
     return this.http.get<any>(url);
+  }
+
+  escolherOpcao(idBolao: number, dados: any){
+    const apiSetOpcaoEndpoint = `/ganhador`;
+    const url = `${this.apiUrl}${apiSetOpcaoEndpoint}/${idBolao}`;
+    return this.http.patch<any>(url, dados);
   }
 }
