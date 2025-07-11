@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { AuthInterceptor } from './core/handlers/http.handle-interceptor';
+
 import { CommonModule } from '@angular/common';
 import { CoreModule } from './core/core.module';
 import { NgxMaskModule } from 'ngx-mask';
@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateBolaoComponent } from './components/update-bolao/update-bolao.component';
 import { OutcomeBolaoComponent } from './components/outcome-bolao/outcome-bolao.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ListBolaoComponent } from './components/list-bolao/list-bolao.component';
 
 @NgModule({
@@ -42,7 +43,10 @@ import { ListBolaoComponent } from './components/list-bolao/list-bolao.component
     HttpClientModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true }
   ],
   bootstrap: [AppComponent]
 })
